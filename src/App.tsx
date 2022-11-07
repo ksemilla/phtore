@@ -1,13 +1,12 @@
 import { useState } from 'react'
 import reactLogo from './assets/react.svg'
 import './App.css'
+import { RouterProvider } from 'react-router-dom'
+import { routes } from "./routes"
 
 function App() {
   return (
-    <div className="">
-      test
-      <div className='text-3xl'>test</div>
-    </div>
+    <RouterProvider router={routes} />
   )
 }
 
