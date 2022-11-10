@@ -4,6 +4,7 @@ import { UserType } from '../types'
 interface AuthState {
   isLogged: boolean,
   user: UserType | null,
+  login: (user: UserType) => void,
 }
 
 const useAuthStore = create<AuthState>()((set) => ({
