@@ -10,3 +10,15 @@ export const LOGIN = gql`
     }
   }
 `
+
+export const VERIFY_TOKEN = gql`
+  mutation VerifyToken($token: String!) {
+    verifyToken(token: $token) {
+      acknowledge
+      user {
+        email
+        id
+      }
+    }
+  }
+`

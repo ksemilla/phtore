@@ -1,13 +1,8 @@
-import { GET_USERS } from "@/api"
-import { useQuery } from "@apollo/client"
 import { useRef } from "react"
 
 const Home = () => {
   
   const inputRef = useRef<HTMLInputElement>(null)
-  const { loading, error, data } = useQuery(GET_USERS)
-
-  console.log(data)
 
   return (
     <div className="min-h-screen">
@@ -28,10 +23,6 @@ const Home = () => {
             </div>
           </div>
         </form>
-      </div>
-
-      <div>
-        <button>fetch users</button>
       </div>
     </div>
   )

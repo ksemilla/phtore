@@ -7,3 +7,13 @@ export const GET_USERS = gql`
     }
   }
 `
+
+export const CREATE_USER = gql`
+  mutation CreateUser($data: UserCreate!) {
+    createUser(data: $data) {
+      token
+      acknowledge
+      insertedId
+    }
+  }
+`
