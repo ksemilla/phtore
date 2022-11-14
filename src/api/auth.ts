@@ -6,6 +6,10 @@ export const LOGIN = gql`
       token
       user {
         email
+        id
+        name
+        role
+        locked
       }
     }
   }
@@ -18,6 +22,9 @@ export const VERIFY_TOKEN = gql`
       user {
         email
         id
+        role
+        locked
+        name
       }
     }
   }

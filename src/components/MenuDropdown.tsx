@@ -1,14 +1,16 @@
 import { Menu, Transition } from '@headlessui/react'
 import { Fragment } from 'react'
-import { ChevronDownIcon, ArrowRightOnRectangleIcon, UserCircleIcon, TableCellsIcon } from '@heroicons/react/20/solid'
+import { ChevronDownIcon, ArrowRightOnRectangleIcon, UserCircleIcon, TableCellsIcon, ShieldCheckIcon } from '@heroicons/react/20/solid'
 import { useAuthStore } from '@/stores'
 import { useNavigate } from 'react-router-dom'
+import { UserRoles } from '@/types'
 
 const MenuDropdown = () => {
 
+  const user = useAuthStore(state => state.user)
   const navigate = useNavigate()
   const logout = useAuthStore(state => state.logout)
-
+  
   return (
     <div>
       <Menu as="div" className="relative inline-block text-left">
@@ -41,7 +43,7 @@ const MenuDropdown = () => {
                     onClick={()=>navigate("/my-account")}
                   >
                     <UserCircleIcon className='mr-2 h-5 w-5 text-violet-400'/>
-                    My Account
+                    My profile
                   </button>
                 )}
               </Menu.Item>
@@ -54,11 +56,26 @@ const MenuDropdown = () => {
                     onClick={()=>navigate("/stores")}
                   >
                     <TableCellsIcon className='mr-2 h-5 w-5 text-violet-400'/>
-                    Stores
+                    My stores
                   </button>
                 )}
               </Menu.Item>
             </div>
+            {user?.role === UserRoles.ADMIN && <div className="px-1 py-1">
+              <Menu.Item>
+                {({ active }) => (
+                  <button
+                    className={`${
+                      active ? 'bg-violet-500 text-white' : 'text-gray-900'
+                    } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
+                    onClick={()=>navigate("/admin")}
+                  >
+                    <ShieldCheckIcon className='mr-2 h-5 2-5 text-violet-400'/>
+                    Admin
+                  </button>
+                )}
+              </Menu.Item>
+            </div>}
             <div className="px-1 py-1">
               <Menu.Item>
                 {({ active }) => (

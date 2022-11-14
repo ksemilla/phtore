@@ -1,9 +1,16 @@
 import { gql } from "@apollo/client";
 
 export const GET_USERS = gql`
-  query GetUsers {
-    users {
-      email
+  query GetUsers($filter: UserFilterOptions!, $limit: Int, $skip: Int) {
+    users(filter: $filter, limit: $limit, skip: $skip) {
+      list {
+        id
+        email
+        name
+        locked
+        role
+      }
+      totalCount
     }
   }
 `
@@ -17,3 +24,4 @@ export const CREATE_USER = gql`
     }
   }
 `
+

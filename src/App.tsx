@@ -1,12 +1,13 @@
 import './App.css'
 import { RouterProvider } from 'react-router-dom'
 import { routes } from "./routes"
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { ApolloError, useMutation } from '@apollo/client'
 import { VERIFY_TOKEN } from './api/auth'
 import { logError } from './utils'
 import { useAuthStore } from './stores'
 import { UserType } from './types'
+import Spinner from './components/Spinner'
 
 function App() {
 
@@ -14,6 +15,7 @@ function App() {
   const token = localStorage.getItem('token')
   const loginUser = useAuthStore(state => state.login)
   const setVerifyingToken = useAuthStore(state => state.setVerifyingToken)
+  const [loading, setLoading] = useState<boolean>(true)
 
   useEffect(()=>{
     const verify = async () => {
@@ -28,12 +30,19 @@ function App() {
         localStorage.removeItem("token")
       } finally {
         setVerifyingToken(false)
+        setLoading(false)
       }
     }
 
-    token && verify()
+    verify()
 
   }, [])
+
+  if (loading) {
+    return <div className='min-h-screen flex justify-center items-center'>
+      <Spinner color='text-gray-500' size={10}/>
+    </div>
+  }
 
   return (
     <RouterProvider router={routes} />
