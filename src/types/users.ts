@@ -9,12 +9,23 @@ export type UserType = {
   role: UserRoles
   name?: string
   locked: boolean
+  phone: string
+  mobile: string
+  dateOfBirth: string
 }
 
 export type UserCreateType = {
   email: string
   password: string
   confirmPassword: string
+}
+
+export type UserUpdateInput = {
+  email?: string
+  name?: string
+  dateOfBirth?: string
+  phone?: string
+  mobile?: string
 }
 
 export type UserCreateGraphType = {

@@ -1,7 +1,7 @@
 import { classNames } from "@/utils";
 import { toSvg } from "jdenticon";
 
-const Identicon = (props: {value: string, size: number, containerSize: number}) => {
+const Identicon = (props: {value: string, size: number, containerSize?: number}) => {
   const { value, size, containerSize } = props
   const svgString = toSvg(value, size)
   return (

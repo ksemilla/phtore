@@ -8,6 +8,7 @@ interface AuthState {
   verifyingToken: boolean,
   setVerifyingToken: (data: boolean) => void,
   logout: () => void,
+  setUser: (data: UserType) => void,
 }
 
 const useAuthStore = create<AuthState>()((set) => ({

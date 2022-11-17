@@ -13,12 +13,13 @@ const AdminUserList = () => {
     skip: 0,
     totalCount: 0
   })
-  const { loading, error, data } = useQuery<UserListResult, UserListInput>(GET_USERS, { variables: { filter: {}, limit: pageInfo.limit, skip: pageInfo.skip } })
+  const { loading, error, data, refetch } = useQuery<UserListResult, UserListInput>(GET_USERS, { variables: { filter: {}, limit: pageInfo.limit, skip: pageInfo.skip } })
 
   useEffect(()=>{
-    console.log("data", data)
     data && setPageInfo(prevState => ({...prevState, totalCount: data.users.totalCount}))
   }, [data])
+
+  refetch()
 
   if (loading) {
     return <Spinner />

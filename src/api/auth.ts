@@ -10,6 +10,9 @@ export const LOGIN = gql`
         name
         role
         locked
+        phone
+        mobile
+        dateOfBirth
       }
     }
   }
@@ -25,6 +28,9 @@ export const VERIFY_TOKEN = gql`
         role
         locked
         name
+        phone
+        mobile
+        dateOfBirth
       }
     }
   }

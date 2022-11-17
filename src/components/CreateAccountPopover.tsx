@@ -16,10 +16,9 @@ const CreateUserForm = (props: CreateUserFormType) => {
 
   const { register, handleSubmit, watch, formState: { errors } } = useForm<UserCreateType>()
   const password = watch("password")
-  const [createUser, { error, loading }] = useMutation<UserCreateResponse, { data: UserCreateGraphType } >(CREATE_USER)
+  const [createUser, { error, loading }] = useMutation<UserCreateResponse, { data: UserCreateGraphType }>(CREATE_USER)
 
   const onSubmit = handleSubmit(async (formValues)=>{
-    console.log(formValues)
 
     const newFormValues = {
       email: formValues.email,
@@ -32,6 +31,7 @@ const CreateUserForm = (props: CreateUserFormType) => {
     } catch(e) {
       logError(e as ApolloError)
     }
+
   })
 
   return <form onSubmit={onSubmit}>
