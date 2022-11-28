@@ -1,3 +1,5 @@
+import { CreateResponse } from "./core"
+
 export enum UserRoles {
   ADMIN = 'ADMIN',
   USER = 'USER'
@@ -33,10 +35,8 @@ export type UserCreateGraphType = {
   password: string
 }
 
-export type UserCreateResponse = {
-  acknowledge: boolean
+export interface UserCreateResponse extends CreateResponse {
   token: string
-  inserted_id: string
 }
 
 export type UserListResult = {

@@ -2,16 +2,16 @@ import { Fragment, useState } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import {
   Bars3Icon,
+  CalendarIcon,
+  ChartBarIcon,
   FolderIcon,
   HomeIcon,
+  InboxIcon,
   UsersIcon,
   XMarkIcon,
 } from '@heroicons/react/24/outline'
 import { classNames } from '@/utils'
-import { useAuthStore } from '@/stores'
-import { UserRoles } from '@/types'
-import { Link, Navigate, Outlet, useLocation } from 'react-router-dom'
-import Identicon from '@/components/Identicon'
+import { Link, Outlet, useLocation } from 'react-router-dom'
 
 type NavItem = {
   name: string,
@@ -24,24 +24,21 @@ type NavItem = {
 
 const navigation: NavItem[] = [
   { name: 'Dashboard', path: '', icon: HomeIcon },
-  { name: 'Users', path: 'users', icon: UsersIcon },
-  { name: 'Stores', path: 'stores', icon: FolderIcon },
+  { name: 'Products', path: 'products', icon: UsersIcon },
+  { name: 'Customer Orders', path: 'customer-orders', icon: FolderIcon },
+  { name: 'Invoices', path: 'invoices', icon: InboxIcon },
+  { name: 'Reports', path: 'reports', icon: ChartBarIcon },
 ]
 
-export default function AdminLayout() {
+export default function EntityAdminLayout() {
   const [sidebarOpen, setSidebarOpen] = useState(false)
-  const user = useAuthStore(state => state.user)
 
   const location = useLocation()
-  const subPath = location.pathname.split("/")[2] ?? ""
-
-  if (user?.role !== UserRoles.ADMIN) {
-    return <Navigate to="/" />
-  }
+  const subPath = location.pathname.split("/")[3] ?? ""
 
   return (
     <>
-      <div>
+      <div className='bg-gray-50'>
         <Transition.Root show={sidebarOpen} as={Fragment}>
           <Dialog as="div" className="relative z-40 md:hidden" onClose={setSidebarOpen}>
             <Transition.Child
@@ -97,9 +94,9 @@ export default function AdminLayout() {
                     </div>
                     <nav className="mt-5 space-y-1 px-2">
                       {navigation.map((item) => (
-                        <a
+                        <Link
                           key={item.name}
-                          href={item.path}
+                          to={item.path}
                           className={classNames(
                             item.path === subPath
                               ? 'bg-gray-100 text-gray-900'
@@ -115,7 +112,7 @@ export default function AdminLayout() {
                             aria-hidden="true"
                           />
                           {item.name}
-                        </a>
+                        </Link>
                       ))}
                     </nav>
                   </div>
@@ -148,9 +145,13 @@ export default function AdminLayout() {
           {/* Sidebar component, swap this element with another sidebar if you like */}
           <div className="flex min-h-0 flex-1 flex-col border-r border-gray-200 bg-white">
             <div className="flex flex-1 flex-col overflow-y-auto pt-5 pb-4">
-              <Link to="/" className="flex flex-shrink-0 items-center px-4 justify-center font-semibold text-xl hover:text-indigo-500">
-                phtore
-              </Link>
+              <div className="flex flex-shrink-0 items-center px-4">
+                <img
+                  className="h-8 w-auto"
+                  src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
+                  alt="Your Company"
+                />
+              </div>
               <nav className="mt-5 flex-1 space-y-1 bg-white px-2">
                 {navigation.map((item) => (
                   <Link
@@ -174,13 +175,13 @@ export default function AdminLayout() {
               </nav>
             </div>
             <div className="flex flex-shrink-0 border-t border-gray-200 p-4">
-              <Link to="/my-account" className="group block w-full flex-shrink-0">
+              <a href="#" className="group block w-full flex-shrink-0">
                 <div className="flex items-center">
                   <div>
-                    <Identicon
-                      value={user.email}
-                      size={50}
-                      containerSize={10}
+                    <img
+                      className="inline-block h-9 w-9 rounded-full"
+                      src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                      alt=""
                     />
                   </div>
                   <div className="ml-3">
@@ -188,7 +189,7 @@ export default function AdminLayout() {
                     <p className="text-xs font-medium text-gray-500 group-hover:text-gray-700">View profile</p>
                   </div>
                 </div>
-              </Link>
+              </a>
             </div>
           </div>
         </div>

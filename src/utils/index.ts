@@ -1,4 +1,5 @@
 import { ApolloError } from "@apollo/client"
+import React, { useEffect, useState } from "react"
 
 export function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ')
@@ -36,4 +37,16 @@ export const dirtyValues = (
   }
 
   return {}
+}
+
+export const useSearchDebounce = (delay: number = 350): [string, string, React.Dispatch<React.SetStateAction<string>>] => {
+  const [delayedSearch, setDelayedSearch] = useState<string>("")
+  const [searchQuery, setSearchQuery] = useState<string>("")
+
+  useEffect(()=>{
+    const delayFn = setTimeout(()=>setDelayedSearch(searchQuery), delay)
+    return () => clearTimeout(delayFn)
+  }, [searchQuery, delay])
+
+  return [delayedSearch, searchQuery, setSearchQuery]
 }

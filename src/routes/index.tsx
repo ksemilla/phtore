@@ -1,11 +1,17 @@
 import AdminLayout from "@/layouts/AdminLayout";
 import AdminUserLayout from "@/layouts/AdminUserLayout";
+import EntityAdminLayout from "@/layouts/EntityAdminLayout";
 import MyAccountLayout from "@/layouts/MyAccountLayout";
+import MyStoresLayout from "@/layouts/MyStoresLayout";
 import Account from "@/pages/account";
 import Admin from "@/pages/admin";
 import AdminStores from "@/pages/admin/stores";
 import AdminUserList from "@/pages/admin/users/List";
-import EntityAdmin from "@/pages/entityAdmin";
+import EntityCustomerOrders from "@/pages/entityAdmin/CustomerOrders";
+import EntityAdminDashboard from "@/pages/entityAdmin/Dashboard"
+import EntityProducts from "@/pages/entityAdmin/Products";
+import MyStores from "@/pages/myStores";
+import EntityCreate from "@/pages/myStores/Create";
 import { createBrowserRouter, createRoutesFromElements, Route } from "react-router-dom";
 import AuthLayout from "../layouts/AuthLayout";
 import BaseLayout from "../layouts/BaseLayout";
@@ -20,6 +26,10 @@ export const routes = createBrowserRouter(
       <Route path="/my-account" element={<MyAccountLayout />}>
         <Route path="" element={<Account />} />
       </Route>
+      <Route path="/my-stores" element={<MyStoresLayout />}>
+        <Route path="" element={<MyStores />} />
+        <Route path="create" element={<EntityCreate />} />
+      </Route>
       <Route path="/admin" element={<AdminLayout />}>
         <Route path="" element={<Admin />} />
         <Route path="users" element={<AdminUserLayout />}>
@@ -29,7 +39,11 @@ export const routes = createBrowserRouter(
       </Route>
       <Route path="/:entity">
         <Route path="admin" element={<AuthLayout />}>
-          <Route path="" element={<EntityAdmin />} />
+          <Route element={<EntityAdminLayout />}>
+            <Route path="" element={<EntityAdminDashboard />} />
+            <Route path="products" element={<EntityProducts />} />
+            <Route path="customer-orders" element={<EntityCustomerOrders />} />
+          </Route>
         </Route>
       </Route>
     </Route>

@@ -4,7 +4,7 @@ import { PageInfo, UserListInput, UserListResult } from "@/types"
 import { useQuery } from "@apollo/client"
 import { useEffect, useState } from "react"
 import Inline from "./Inline"
-import Pagination from "./Pagination"
+import Pagination from "@/components/Pagination"
 
 const AdminUserList = () => {
 

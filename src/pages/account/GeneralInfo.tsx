@@ -1,21 +1,11 @@
-import {
-  PaperClipIcon,
-  PencilIcon,
-  PencilSquareIcon,
-} from '@heroicons/react/20/solid'
 import { UserType, UserUpdateInput } from '@/types'
 import { useForm } from 'react-hook-form'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { classNames, dirtyValues, logError } from '@/utils'
 import { ApolloError, useMutation } from '@apollo/client'
 import { UPDATE_USER } from '@/api'
 import { useAuthStore } from '@/stores'
 import Spinner from '@/components/Spinner'
-
-const attachments = [
-  { name: 'resume_front_end_developer.pdf', href: '#' },
-  { name: 'coverletter_front_end_developer.pdf', href: '#' },
-]
 
 const GeneralInfo = (props: { user: UserType }) => {
   const { user } = props
@@ -23,7 +13,7 @@ const GeneralInfo = (props: { user: UserType }) => {
   const thisUser = useAuthStore(state => state.user) ?? {}
   const { register, reset, handleSubmit, formState: { isDirty, errors, dirtyFields } } = useForm<UserType>()
 
-  const [updateUser, { error, loading }] = useMutation<UserType, { id: string, data: UserUpdateInput }>(UPDATE_USER)
+  const [updateUser, { loading }] = useMutation<UserType, { id: string, data: UserUpdateInput }>(UPDATE_USER)
 
   useEffect(()=>{
     user && reset(user)
