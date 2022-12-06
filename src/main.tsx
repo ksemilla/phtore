@@ -3,27 +3,28 @@ import ReactDOM from 'react-dom/client'
 import App from './App'
 import './index.css'
 
-import { ApolloClient, InMemoryCache, ApolloProvider, createHttpLink } from '@apollo/client';
+import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
+import { createUploadLink } from "apollo-upload-client"
 import { setContext } from '@apollo/client/link/context'
-
-const httpLink = createHttpLink({
-  uri: import.meta.env.VITE_GRAPHQL_URL,
-})
 
 const authLink = setContext((_, { headers }) => {
   // get the authentication token from local storage if it exists
   const token = localStorage.getItem('token');
   // return the headers to the context so httpLink can read them
-  return token ? {
+  return {
     headers: {
       ...headers,
       authorization: token ? `Bearer ${token}` : "",
     }
-  } : {}
+  }
+})
+
+const uploadLink = createUploadLink({
+  uri: import.meta.env.VITE_GRAPHQL_URL
 })
 
 const client = new ApolloClient({
-  link: authLink.concat(httpLink),
+  link: authLink.concat(uploadLink),
   cache: new InMemoryCache(),
 });
 

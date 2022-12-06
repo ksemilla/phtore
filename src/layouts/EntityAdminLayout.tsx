@@ -1,4 +1,4 @@
-import { Fragment, useState } from 'react'
+import { Fragment, useEffect, useState } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import {
   Bars3Icon,
@@ -11,7 +11,12 @@ import {
   XMarkIcon,
 } from '@heroicons/react/24/outline'
 import { classNames } from '@/utils'
-import { Link, Outlet, useLocation } from 'react-router-dom'
+import { Link, Outlet, useLocation, useParams } from 'react-router-dom'
+import { useMutation, useQuery } from '@apollo/client'
+import { GET_ENTITY } from '@/api'
+import { EntityType } from '@/types'
+import { useEntityStore } from '@/stores'
+import Spinner from '@/components/Spinner'
 
 type NavItem = {
   name: string,
@@ -28,13 +33,24 @@ const navigation: NavItem[] = [
   { name: 'Customer Orders', path: 'customer-orders', icon: FolderIcon },
   { name: 'Invoices', path: 'invoices', icon: InboxIcon },
   { name: 'Reports', path: 'reports', icon: ChartBarIcon },
+  { name: 'Members', path: 'members', icon: ChartBarIcon },
 ]
 
 export default function EntityAdminLayout() {
+
+  const setEntity = useEntityStore(state => state.setEntity)
+
+  const { slug } = useParams<{ slug: string }>()
   const [sidebarOpen, setSidebarOpen] = useState(false)
 
   const location = useLocation()
   const subPath = location.pathname.split("/")[3] ?? ""
+
+  const {data} = useQuery<{ entity: EntityType }>(GET_ENTITY, { variables: { slug }, fetchPolicy: "no-cache" })
+
+  useEffect(()=>{
+    data && setEntity(data.entity)
+  }, [data])
 
   return (
     <>
@@ -146,11 +162,12 @@ export default function EntityAdminLayout() {
           <div className="flex min-h-0 flex-1 flex-col border-r border-gray-200 bg-white">
             <div className="flex flex-1 flex-col overflow-y-auto pt-5 pb-4">
               <div className="flex flex-shrink-0 items-center px-4">
-                <img
+                {/* <img
                   className="h-8 w-auto"
                   src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
                   alt="Your Company"
-                />
+                /> */}
+                test
               </div>
               <nav className="mt-5 flex-1 space-y-1 bg-white px-2">
                 {navigation.map((item) => (
@@ -205,7 +222,8 @@ export default function EntityAdminLayout() {
             </button>
           </div>
           <main className="flex-1 bg-gray-50 min-h-screen">
-            <Outlet />
+            {data && <Outlet />}
+            {!data && <Spinner />}
           </main>
         </div>
       </div>

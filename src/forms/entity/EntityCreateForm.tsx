@@ -53,7 +53,8 @@ const EntityCreateForm: React.FC<EntityCreateFormProps> = ({ loading: loadingPro
   }
 
   const onSubmit = handleSubmit((formValues) => {
-    onSubmitProp(formValues)
+    const newData = formValues as unknown as EntityType
+    onSubmitProp(newData)
   }, onError)
   
   return (

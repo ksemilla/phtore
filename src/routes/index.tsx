@@ -9,7 +9,8 @@ import AdminStores from "@/pages/admin/stores";
 import AdminUserList from "@/pages/admin/users/List";
 import EntityCustomerOrders from "@/pages/entityAdmin/CustomerOrders";
 import EntityAdminDashboard from "@/pages/entityAdmin/Dashboard"
-import EntityProducts from "@/pages/entityAdmin/Products";
+import EntityProductCreate from "@/pages/entityAdmin/Products/Create";
+import EntityProductList from "@/pages/entityAdmin/Products/List";
 import MyStores from "@/pages/myStores";
 import EntityCreate from "@/pages/myStores/Create";
 import { createBrowserRouter, createRoutesFromElements, Route } from "react-router-dom";
@@ -37,11 +38,14 @@ export const routes = createBrowserRouter(
         </Route>
         <Route path="stores" element={<AdminStores />} />
       </Route>
-      <Route path="/:entity">
+      <Route path="/:slug">
         <Route path="admin" element={<AuthLayout />}>
           <Route element={<EntityAdminLayout />}>
             <Route path="" element={<EntityAdminDashboard />} />
-            <Route path="products" element={<EntityProducts />} />
+            <Route path="products">
+              <Route path="" element={<EntityProductList />} />
+              <Route path="create" element={<EntityProductCreate />} />
+            </Route>
             <Route path="customer-orders" element={<EntityCustomerOrders />} />
           </Route>
         </Route>

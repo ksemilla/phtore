@@ -17,7 +17,7 @@ const MyEntities = () => {
 
   const navigate = useNavigate()
   const {loading, data, error} = useQuery<MyEntityListResult, MyEntityListInput>(MY_ENTITIES, {variables: { limit: 20, skip: 0 }, fetchPolicy: "no-cache"})
-  console.log(data)
+
   return (
     <div>
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
