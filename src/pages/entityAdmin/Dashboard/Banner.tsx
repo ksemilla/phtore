@@ -3,7 +3,7 @@ import { useEntityStore } from "@/stores"
 import { DatafeedInput, Models } from "@/types/datafeed"
 import { classNames } from "@/utils"
 import { useMutation } from "@apollo/client"
-import { ArrowDownIcon, PlusIcon, PhotoIcon } from "@heroicons/react/24/outline"
+import { PlusIcon, PhotoIcon } from "@heroicons/react/24/outline"
 import { useEffect, useState } from "react"
 import { useDropzone } from "react-dropzone"
 
@@ -96,7 +96,6 @@ const Banner = (props: BannerProps) => {
           />
         </div>
       {(preview) && <>
-        {/* <FontAwesomeIcon icon={["fas", "file-excel"]} className="h-24 w-24 text-green-600" /> */}
         <p className="text-sm text-gray-500">{file?.name}</p>
         <div className="flex divide-x-2 divide-gray-300 space-x-1">
           <div 

@@ -1,6 +1,6 @@
 import Spinner from "@/components/Spinner"
 import { ProductType, ProductTypeEnum } from "@/types"
-import { classNames } from "@/utils"
+import { classNames, dirtyValues } from "@/utils"
 import { useEffect } from "react"
 import { useForm } from "react-hook-form"
 
@@ -13,7 +13,7 @@ type ProductCreateFormProps = {
 const ProductCreateForm = (props: ProductCreateFormProps) => {
   const { loading, defaultValues, onSubmit: onSubmitProp } = props
 
-  const { register, reset, handleSubmit, formState: { errors, isDirty } } = useForm<ProductType>({
+  const { register, reset, handleSubmit, formState: { errors, isDirty, dirtyFields } } = useForm<ProductType>({
     defaultValues
   })
 
@@ -21,8 +21,9 @@ const ProductCreateForm = (props: ProductCreateFormProps) => {
     reset(defaultValues)
   }, [defaultValues])
 
-  const onSubmit = handleSubmit((data)=>{
-    onSubmitProp(data)
+  const onSubmit = handleSubmit((formValues)=>{
+    const dirtyFormValues = dirtyValues(dirtyFields, formValues) as ProductType
+    onSubmitProp(dirtyFormValues)
   })
 
   return (
@@ -78,7 +79,7 @@ const ProductCreateForm = (props: ProductCreateFormProps) => {
             <div className="flex items-center space-x-2">
               <input
                 type="number"
-                {...register('quantity', { required: true })}
+                {...register('quantity', { required: true, setValueAs: val => parseFloat(val) })}
                 className={classNames(
                   "block w-full rounded-md border-gray-300 shadow-sm sm:text-sm disabled:text-gray-500",
                   errors?.quantity ? "focus:border-red-500 focus:ring-red-500" : "focus:border-indigo-500 focus:ring-indigo-500",
@@ -100,20 +101,68 @@ const ProductCreateForm = (props: ProductCreateFormProps) => {
           </label>
           <div className="mt-1">
             <div className="flex items-center space-x-2">
-              {/* <input
-                type="text"
-                {...register('type', { required: true })}
+              <select
+                {...register("type")}
                 className={classNames(
                   "block w-full rounded-md border-gray-300 shadow-sm sm:text-sm disabled:text-gray-500",
                   errors?.type ? "focus:border-red-500 focus:ring-red-500" : "focus:border-indigo-500 focus:ring-indigo-500",
                 )}
-              /> */}
-              <select>
-                {}
+              >
+                {Object.entries(ProductTypeEnum).map(([key]) => (
+                  <option key={key} value={key}>{key}</option>
+                ))}
               </select>
             </div>
             <div className='mt-1 text-red-500 text-xs'>
               <p>{errors?.type?.type === "required" && "This field is required"}</p>
+            </div>
+          </div>
+        </div>
+
+        <div className="sm:col-span-3">
+          <label htmlFor="first-name" className="block text-sm font-medium text-gray-700">
+            Sell price
+          </label>
+          <div className="mt-1">
+            <div className="flex items-center space-x-2">
+              <input
+                type="number"
+                {...register('sellPrice', { required: true, setValueAs: val => parseFloat(val) })}
+                className={classNames(
+                  "block w-full rounded-md border-gray-300 shadow-sm sm:text-sm disabled:text-gray-500",
+                  errors?.sellPrice ? "focus:border-red-500 focus:ring-red-500" : "focus:border-indigo-500 focus:ring-indigo-500",
+                )}
+                defaultValue={0}
+                min="0"
+                step="0.01"
+              />
+            </div>
+            <div className='mt-1 text-red-500 text-xs'>
+              <p>{errors?.sellPrice?.type === "required" && "This field is required"}</p>
+            </div>
+          </div>
+        </div>
+
+        <div className="sm:col-span-3">
+          <label htmlFor="first-name" className="block text-sm font-medium text-gray-700">
+            List price
+          </label>
+          <div className="mt-1">
+            <div className="flex items-center space-x-2">
+              <input
+                type="number"
+                {...register('listPrice', { required: true, setValueAs: val => parseFloat(val) })}
+                className={classNames(
+                  "block w-full rounded-md border-gray-300 shadow-sm sm:text-sm disabled:text-gray-500",
+                  errors?.listPrice ? "focus:border-red-500 focus:ring-red-500" : "focus:border-indigo-500 focus:ring-indigo-500",
+                )}
+                defaultValue={0}
+                min="0"
+                step="0.01"
+              />
+            </div>
+            <div className='mt-1 text-red-500 text-xs'>
+              <p>{errors?.listPrice?.type === "required" && "This field is required"}</p>
             </div>
           </div>
         </div>

@@ -12,7 +12,7 @@ import {
 } from '@heroicons/react/24/outline'
 import { classNames } from '@/utils'
 import { Link, Outlet, useLocation, useParams } from 'react-router-dom'
-import { useMutation, useQuery } from '@apollo/client'
+import { useQuery } from '@apollo/client'
 import { GET_ENTITY } from '@/api'
 import { EntityType } from '@/types'
 import { useEntityStore } from '@/stores'

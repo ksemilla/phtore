@@ -10,6 +10,7 @@ import AdminUserList from "@/pages/admin/users/List";
 import EntityCustomerOrders from "@/pages/entityAdmin/CustomerOrders";
 import EntityAdminDashboard from "@/pages/entityAdmin/Dashboard"
 import EntityProductCreate from "@/pages/entityAdmin/Products/Create";
+import ProductEdit from "@/pages/entityAdmin/Products/Edit";
 import EntityProductList from "@/pages/entityAdmin/Products/List";
 import MyStores from "@/pages/myStores";
 import EntityCreate from "@/pages/myStores/Create";
@@ -44,6 +45,7 @@ export const routes = createBrowserRouter(
             <Route path="" element={<EntityAdminDashboard />} />
             <Route path="products">
               <Route path="" element={<EntityProductList />} />
+              <Route path=":id" element={<ProductEdit />} />
               <Route path="create" element={<EntityProductCreate />} />
             </Route>
             <Route path="customer-orders" element={<EntityCustomerOrders />} />

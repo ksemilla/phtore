@@ -23,7 +23,7 @@ const uploadLink = createUploadLink({
   uri: import.meta.env.VITE_GRAPHQL_URL
 })
 
-const client = new ApolloClient({
+export const client = new ApolloClient({
   link: authLink.concat(uploadLink),
   cache: new InMemoryCache(),
 });

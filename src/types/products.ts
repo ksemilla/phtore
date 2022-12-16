@@ -1,8 +1,9 @@
+import { DatafeedType } from "./datafeed"
+
 export enum ProductTypeEnum {
   STOCK = "stock",
   LABOR = "labor",
-  DOCUMENT = "document",
-  ASSEMBLY = "assembly"
+  DOCUMENT = "document"
 }
 
 export type ProductType = {
@@ -15,6 +16,31 @@ export type ProductType = {
   type: ProductTypeEnum
   isActive: boolean
   locked: boolean
-  sell_price: number
-  list_price: number
+  sellPrice: number
+  listPrice: number
+  photoData: DatafeedType
+}
+
+export type ProductCreateInput = {
+  name: string
+  code: string
+  quantity: number
+  type: ProductTypeEnum
+  sellPrice: number
+  listPrice: number
+}
+
+export type ProductListInput = {
+  filter: {
+    entity: string
+  }
+  limit?: number
+  skip?: number 
+}
+
+export type ProductListResult = {
+  products: {
+    list: ProductType[]
+    totalCount: number
+  }
 }

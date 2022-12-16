@@ -1,12 +1,25 @@
+import { CREATE_PRODUCT } from "@/api/products"
 import ProductCreateForm from "@/forms/products/ProductCreateForm"
-import { ProductType } from "@/types"
-import { useState } from "react"
+import { useEntityStore } from "@/stores"
+import { ProductCreateInput, ProductType } from "@/types"
+import { CreateResponse } from "@/types/core"
+import { logError } from "@/utils"
+import { ApolloError, useMutation } from "@apollo/client"
+import { useNavigate } from "react-router-dom"
 
 const EntityProductCreate = () => {
 
-  const [loading, setLoading] = useState<boolean>(false)
-  const onSubmit = (data: ProductType) => {
-    console.log(data)
+  const navigate = useNavigate()
+  const [createProduct, { loading }] = useMutation<CreateResponse, { input: ProductCreateInput }>(CREATE_PRODUCT)
+  const entity = useEntityStore(state => state.entity)
+  const onSubmit = async (data: ProductType) => {
+    data.entity = entity?.id ?? ""
+    try {
+      const res = await createProduct({variables: { input: data }})
+      navigate(`/${entity?.slug}/admin/products/${res.data?.insertedId}`)
+    } catch(e) {
+      logError(e as ApolloError)
+    }
   }
 
   return (
