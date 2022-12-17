@@ -22,7 +22,11 @@ const ProductEdit = () => {
     }
   }
 
-  console.log(data)
+  if (error) {
+    return <div>
+      <h1>Cannot load product</h1>
+    </div>
+  }
 
   return (
     <div className="py-6">
@@ -35,9 +39,6 @@ const ProductEdit = () => {
           <div className="space-y-6 lg:col-span-3">
               <div className="bg-white shadow  grid grid-cols-1 lg:divide-x-2 lg:divide-gray-100 lg:grid-cols-3 sm:rounded-lg">
                 <div className="px-4 py-5 border-b lg:border-none sm:px-6">
-                  {/* <h2 id="applicant-information-title" className="text-lg font-medium leading-6 text-gray-900">
-                    Photo
-                  </h2> */}
                   <Photo
                     url={data?.product.photoData.url}
                   />
@@ -48,7 +49,7 @@ const ProductEdit = () => {
                   </h2>
                   <p className="mt-1 max-w-2xl text-sm text-gray-500">Details about your store</p>
                   <ProductCreateForm
-                    loading={false}
+                    loading={loading}
                     onSubmit={onSubmit}
                     defaultValues={data?.product}
                   />

@@ -1,4 +1,5 @@
 import { CreateResponse } from "./core"
+import { EntityType } from "./entity"
 
 export enum UserRoles {
   ADMIN = 'ADMIN',
@@ -14,6 +15,7 @@ export type UserType = {
   phone: string
   mobile: string
   dateOfBirth: string
+  myEntitties: EntityType[]
 }
 
 export type UserCreateType = {

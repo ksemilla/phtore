@@ -15,8 +15,10 @@ import { Link, Outlet, useLocation, useParams } from 'react-router-dom'
 import { useQuery } from '@apollo/client'
 import { GET_ENTITY } from '@/api'
 import { EntityType } from '@/types'
-import { useEntityStore } from '@/stores'
+import { useAuthStore, useEntityStore } from '@/stores'
 import Spinner from '@/components/Spinner'
+import EntitySwitch from '@/components/EntitySwitch'
+import Identicon from '@/components/Identicon'
 
 type NavItem = {
   name: string,
@@ -42,6 +44,7 @@ export default function EntityAdminLayout() {
 
   const { slug } = useParams<{ slug: string }>()
   const [sidebarOpen, setSidebarOpen] = useState(false)
+  const user = useAuthStore(state => state.user)
 
   const location = useLocation()
   const subPath = location.pathname.split("/")[3] ?? ""
@@ -161,13 +164,8 @@ export default function EntityAdminLayout() {
           {/* Sidebar component, swap this element with another sidebar if you like */}
           <div className="flex min-h-0 flex-1 flex-col border-r border-gray-200 bg-white">
             <div className="flex flex-1 flex-col overflow-y-auto pt-5 pb-4">
-              <div className="flex flex-shrink-0 items-center px-4">
-                {/* <img
-                  className="h-8 w-auto"
-                  src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
-                  alt="Your Company"
-                /> */}
-                test
+              <div className="px-2">
+                <EntitySwitch />
               </div>
               <nav className="mt-5 flex-1 space-y-1 bg-white px-2">
                 {navigation.map((item) => (
@@ -192,21 +190,29 @@ export default function EntityAdminLayout() {
               </nav>
             </div>
             <div className="flex flex-shrink-0 border-t border-gray-200 p-4">
-              <a href="#" className="group block w-full flex-shrink-0">
+              <Link to="/" className="group w-full flex items-center px-2 py-2 text-sm font-medium rounded-md text-gray-600 hover:bg-gray-50 hover:text-gray-900">
+                <HomeIcon
+                  className='mr-3 flex-shrink-0 h-6 w-6'
+                />
+                Go to home page
+              </Link>
+            </div>
+            <div className="flex flex-shrink-0 border-t border-gray-200 p-4">
+              <div className="group block w-full flex-shrink-0">
                 <div className="flex items-center">
                   <div>
-                    <img
-                      className="inline-block h-9 w-9 rounded-full"
-                      src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                      alt=""
+                    <Identicon
+                      value={user?.email ?? ""}
+                      size={50}
+                      containerSize={10}
                     />
                   </div>
                   <div className="ml-3">
-                    <p className="text-sm font-medium text-gray-700 group-hover:text-gray-900">Tom Cook</p>
-                    <p className="text-xs font-medium text-gray-500 group-hover:text-gray-700">View profile</p>
+                    <p className="text-sm font-medium text-gray-700 group-hover:text-gray-900">{user?.name}</p>
+                    <p className="text-xs font-medium text-gray-500 group-hover:text-gray-700">{user?.email}</p>
                   </div>
                 </div>
-              </a>
+              </div>
             </div>
           </div>
         </div>

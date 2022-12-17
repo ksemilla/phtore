@@ -1,8 +1,8 @@
 import { UPLOAD } from "@/api/datafeed"
 import Modal from "@/components/Modal"
 import { DatafeedInput, Models } from "@/types/datafeed"
-import { classNames } from "@/utils"
-import { useMutation } from "@apollo/client"
+import { classNames, logError } from "@/utils"
+import { ApolloError, useMutation } from "@apollo/client"
 import { PhotoIcon, PlusIcon, PencilSquareIcon, CameraIcon, ArrowUpTrayIcon} from "@heroicons/react/24/outline"
 import { useEffect, useState } from "react"
 import { useDropzone } from "react-dropzone"
@@ -18,7 +18,7 @@ const Photo = (props: PhotoProps) => {
   const { url } = props
   const [open, setOpen] = useState<boolean>(false)
 
-  const [upload, {error}] = useMutation<{ upload: boolean }, { input: DatafeedInput }>(UPLOAD)
+  const [upload] = useMutation<{ upload: boolean }, { input: DatafeedInput }>(UPLOAD)
 
   const [preview, setPreview] = useState<string>("")
   const [photo, setPhoto] = useState<string>("")
@@ -36,7 +36,13 @@ const Photo = (props: PhotoProps) => {
   })
 
   const onSave = async () => {
-    file && id && upload({ variables: { input: { file, field: "photo", model: Models.PRODUCT, objectId: id } } })
+    try {
+      file && id && await upload({ variables: { input: { file, field: "photo", model: Models.PRODUCT, objectId: id } } })
+      setPhoto(preview)
+      setOpen(false)
+    } catch(e) {
+      logError(e as ApolloError)
+    }
   }
 
   useEffect(()=>{

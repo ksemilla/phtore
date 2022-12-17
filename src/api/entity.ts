@@ -22,12 +22,9 @@ export const CREATE_ENTITY = gql`
 export const MY_ENTITIES = gql`
   query MyEntities($limit: Int, $skip: Int) {
     myEntities(limit: $limit, skip: $skip) {
-      list {
-        id
-        name
-        slug
-      }
-      totalCount
+      id
+      name
+      slug
     }
   }
 `
