@@ -6,9 +6,11 @@ import { useQuery } from '@apollo/client'
 import { EntityType } from '@/types'
 import { MY_ENTITIES } from '@/api'
 import Spinner from './Spinner'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useLocation, useNavigate, useParams } from 'react-router-dom'
+import { useEntityStore } from '@/stores'
 
 export default function EntitySwitch() {
+  const setEntity = useEntityStore(state => state.setEntity)
   const navigate = useNavigate()
   const { slug } = useParams<{slug: string}>()
   const [selected, setSelected] = useState<EntityType>()
@@ -17,12 +19,19 @@ export default function EntitySwitch() {
   useEffect(()=>{
     if (data) {
       const entity = data.myEntities.find(el => el.slug === slug)
-      if (entity) setSelected(entity)
+      if (entity) {
+        setSelected(entity)
+        setEntity(entity)
+      }
     }
   }, [data])
 
+  const location = useLocation()
+
   useEffect(()=>{
-    if (selected) {
+    if (selected && selected.slug == location.pathname.split("/")[1]) {
+      navigate(location.pathname)
+    } else if (selected) {
       navigate(`/${selected?.slug}/admin`)
     }
   }, [selected])

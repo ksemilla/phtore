@@ -50,3 +50,12 @@ export const UPDATE_PRODUCT = gql`
     }
   }
 `
+
+export const FIND_PRODUCT_BY_NAME = gql`
+  query GetProductsByName($filter: ProductFilterOptions!) {
+    findProductsByName(filter: $filter) {
+      id
+      name
+    }
+  }
+`

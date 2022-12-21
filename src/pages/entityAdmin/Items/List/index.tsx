@@ -8,7 +8,7 @@ import { GET_PRODUCTS } from "@/api/products"
 import { useEntityStore } from "@/stores"
 import Inline from "./Inline"
 
-const EntityItems = () => {
+const EntityProducts = () => {
 
   const entity = useEntityStore(state => state.entity)
   const [pageInfo, setPageInfo] = useState<PageInfo>({
@@ -34,7 +34,7 @@ const EntityItems = () => {
     <div className="p-6">
       <div className="sm:flex sm:items-center">
         <div className="sm:flex-auto">
-          <h1 className="text-xl font-semibold text-gray-900">Products</h1>
+          <h1 className="text-xl font-semibold text-gray-900">Items</h1>
           <p className="mt-2 text-sm text-gray-700">
             A list of all the users in your account including their name, title, email and role.
           </p>
@@ -44,7 +44,7 @@ const EntityItems = () => {
             to="create"
             className="inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:w-auto"
           >
-            Add product
+            Add item
           </Link>
         </div>
       </div>
@@ -81,4 +81,4 @@ const EntityItems = () => {
   )
 }
 
-export default EntityItems
+export default EntityProducts

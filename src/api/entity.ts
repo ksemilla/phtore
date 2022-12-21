@@ -25,6 +25,9 @@ export const MY_ENTITIES = gql`
       id
       name
       slug
+      bannerData {
+        url
+      }
     }
   }
 `

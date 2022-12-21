@@ -4,11 +4,13 @@ import { EntityListInput, EntityListResult } from "@/types"
 import { useSearchDebounce } from "@/utils"
 import { useQuery } from "@apollo/client"
 import { useRef } from "react"
+import { useNavigate } from "react-router-dom"
 
 const Home = () => {
   
+  const navigate = useNavigate()
   const [delayedSearch, searchQuery, setSearchQuery] = useSearchDebounce()
-  const {loading, data, error} = useQuery<EntityListResult, EntityListInput>(GET_ENTITIES, { variables: { filter: { name: delayedSearch } } })
+  const {data} = useQuery<EntityListResult, EntityListInput>(GET_ENTITIES, { variables: { filter: { name: delayedSearch } } })
 
   const inputRef = useRef<HTMLInputElement>(null)
 
@@ -42,6 +44,7 @@ const Home = () => {
                 key={entity.id}
                 classNamesProps="overflow-hidden flex justify-center"
                 containerClassNames="h-48"
+                onClick={()=>navigate(`/${entity.slug}`)}
               >
                 {entity.bannerData.url ? <img src={entity.bannerData.url} /> :
                   <div className="flex items-center">

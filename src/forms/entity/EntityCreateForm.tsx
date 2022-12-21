@@ -30,7 +30,6 @@ const EntityCreateForm: React.FC<EntityCreateFormProps> = ({ loading: loadingPro
   })
 
   useEffect(()=>{
-    console.log(data)
     if (data && data.findEntityBySlug.id !== "" && !defaultValues) {
       setError('nameCheck', { type: 'nameCheck', message: 'Name is already taken' }, {shouldFocus: true})
       setIsValidName(false)

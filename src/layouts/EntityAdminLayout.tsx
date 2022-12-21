@@ -11,7 +11,7 @@ import {
   XMarkIcon,
 } from '@heroicons/react/24/outline'
 import { classNames } from '@/utils'
-import { Link, Outlet, useLocation, useParams } from 'react-router-dom'
+import { Link, Navigate, Outlet, useLocation, useParams } from 'react-router-dom'
 import { useQuery } from '@apollo/client'
 import { GET_ENTITY } from '@/api'
 import { EntityType } from '@/types'
@@ -32,6 +32,7 @@ type NavItem = {
 const navigation: NavItem[] = [
   { name: 'Dashboard', path: '', icon: HomeIcon },
   { name: 'Products', path: 'products', icon: UsersIcon },
+  { name: 'Items', path: 'items', icon: UsersIcon },
   { name: 'Customer Orders', path: 'customer-orders', icon: FolderIcon },
   { name: 'Invoices', path: 'invoices', icon: InboxIcon },
   { name: 'Reports', path: 'reports', icon: ChartBarIcon },
@@ -40,6 +41,7 @@ const navigation: NavItem[] = [
 
 export default function EntityAdminLayout() {
 
+  const isLogged = useAuthStore(state => state.isLogged)
   const setEntity = useEntityStore(state => state.setEntity)
 
   const { slug } = useParams<{ slug: string }>()
@@ -55,8 +57,14 @@ export default function EntityAdminLayout() {
     data && setEntity(data.entity)
   }, [data])
 
+  
+
+  if (!isLogged) {
+    return <Navigate to="/login" />
+  }
+
   return (
-    <>
+    <div className='min-h-full'>
       <div className='bg-gray-50'>
         <Transition.Root show={sidebarOpen} as={Fragment}>
           <Dialog as="div" className="relative z-40 md:hidden" onClose={setSidebarOpen}>
@@ -160,9 +168,9 @@ export default function EntityAdminLayout() {
         </Transition.Root>
 
         {/* Static sidebar for desktop */}
-        <div className="hidden md:fixed md:inset-y-0 md:flex md:w-64 md:flex-col">
+        <div className="hidden bg-white md:fixed md:inset-y-0 md:flex md:w-64 md:flex-col" style={{ marginTop: "70px" }}>
           {/* Sidebar component, swap this element with another sidebar if you like */}
-          <div className="flex min-h-0 flex-1 flex-col border-r border-gray-200 bg-white">
+          <div className="flex min-h-0 flex-1 flex-col border-r border-gray-200">
             <div className="flex flex-1 flex-col overflow-y-auto pt-5 pb-4">
               <div className="px-2">
                 <EntitySwitch />
@@ -227,12 +235,12 @@ export default function EntityAdminLayout() {
               <Bars3Icon className="h-6 w-6" aria-hidden="true" />
             </button>
           </div>
-          <main className="flex-1 bg-gray-50 min-h-screen">
+          <main className="flex-1 bg-gray-50">
             {data && <Outlet />}
             {!data && <Spinner />}
           </main>
         </div>
       </div>
-    </>
+    </div>
   )
 }

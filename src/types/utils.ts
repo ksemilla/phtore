@@ -10,5 +10,7 @@ export type PaginationProps = {
     limit: number;
     skip: number;
     totalCount: number;
-}>>
+  }>>
 }
+
+export type NonUndefined<T> = T extends undefined ? never: T

@@ -49,7 +49,7 @@ const Banner = (props: BannerProps) => {
   }
 
   useEffect(()=>{
-    url && setPreview(url)
+    url != undefined && url != null && setPreview(url)
   }, [url])
 
   useEffect(()=>{

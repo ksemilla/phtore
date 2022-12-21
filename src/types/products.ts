@@ -44,3 +44,26 @@ export type ProductListResult = {
     totalCount: number
   }
 }
+
+export type ItemCategoryChoiceType = {
+  name: string
+}
+
+export type ItemCategoryType = {
+  name: string,
+  choices: ItemCategoryChoiceType[]
+}
+
+interface ItemInstance {
+  [key: string]: any
+  product: {
+    name: string
+    id: string
+  }
+}
+
+export type ItemType = {
+  name: string,
+  categories: ItemCategoryType[]
+  instances:  ItemInstance[]
+}
