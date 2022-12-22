@@ -6,9 +6,10 @@ interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
   classNamesProps?: string
   tilt?: boolean
   containerClassNames?: string
+  noCursorPointer?: boolean
 }
 
-const Card: React.FC<CardProps> = ({ children, classNamesProps, containerClassNames, tilt=true, ...rest }) => {
+const Card: React.FC<CardProps> = ({ children, classNamesProps, containerClassNames, tilt=true, noCursorPointer, ...rest }) => {
   return (
     <div className={classNames(
       "rounded-lg bg-gray-300 relative",
@@ -16,8 +17,9 @@ const Card: React.FC<CardProps> = ({ children, classNamesProps, containerClassNa
     )}>
       <div
         className={classNames(
-        "relative top-0 right-0 left-0 bottom-0 bg-white shadow rounded-lg cursor-pointer h-full",
+        "relative top-0 right-0 left-0 bottom-0 bg-white shadow rounded-lg h-full",
         tilt ? "hover:-top-0.5 hover:left-0.5" : "",
+        noCursorPointer ? "" : "cursor-pointer",
         classNamesProps ?? "",
         )}
         {...rest}

@@ -8,21 +8,38 @@ import InstanceForm from "./InstanceForm"
 
 const Instances = () => {
 
-  const { control, register } = useFormContext<ItemType>()
+  const { control } = useFormContext<ItemType>()
   const { fields, append, remove } = useFieldArray({
     control,
     name: "instances",
     keyName: "uuid"
   })
+
+  const categories = useWatch({ name: "categories" })
+
   return (
-    <div>
-      <h1>Instances</h1>
-      {fields.map((instance, idx) => (
-        <InstanceForm
-          key={instance.uuid}
-          idx={idx}
-        />
-      ))}
+    <div className="space-y-2">
+      <h1 className="text-lg font-medium leading-6 text-gray-900">Instances</h1>
+
+      <div className="px-4 py-5 sm:px-6 bg-white shadow md:rounded-lg space-y-2">
+        <div className="flex items-center space-x-2">
+          <div className="w-8">#</div>
+          <div className="w-full grid grid-cols-12 gap-x-2">
+            {categories?.map((category: ItemCategoryType, idx: number) => (
+              <div key={idx} className="col-span-2">
+                <label>{category.name}</label>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {fields.map((instance, idx) => (
+          <InstanceForm
+            key={instance.uuid}
+            idx={idx}
+          />
+        ))}
+      </div>
       <button
         type="button"
         onClick={()=>{

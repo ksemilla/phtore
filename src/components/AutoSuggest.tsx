@@ -1,7 +1,8 @@
 import { Combobox, Transition } from "@headlessui/react";
-import React, { forwardRef, Ref, useCallback, useState } from "react"
+import React, { forwardRef, Ref, useCallback, useEffect, useState } from "react"
 import { CheckIcon, ChevronDownIcon } from "@heroicons/react/24/outline"
 import { classNames } from "@/utils";
+import { useFormContext } from "react-hook-form";
 
 interface GenericRecord extends Record<string, any> {}
 
@@ -15,6 +16,9 @@ interface AutosuggestType<T> extends React.DetailedHTMLProps<React.InputHTMLAttr
 
 const AutoSuggest = forwardRef(
   <T,>(props: AutosuggestType<GenericRecord>, ref: Ref<HTMLInputElement>) => {
+
+    const { getValues } = useFormContext()
+
     const { options, resource, hasError, onQueryChange, onOptionSelect, ...rest } = props
 
     const [query, setQuery] = useState<string>('')
@@ -43,9 +47,16 @@ const AutoSuggest = forwardRef(
       'cursor-pointer select-none relative py-2 pl-3 pr-9'
     ), [])
 
+    useEffect(()=>{
+      if (rest.name) {
+        const val = { [resource]: getValues(rest.name) } as T
+        setSelectedOption(val)
+      }
+    }, [rest.name, getValues])
+
     return (
       <Combobox value={selectedOption} onChange={handleSelect} nullable as="div">
-        <div className="relative mt-1">
+        <div className="relative">
           <Combobox.Input
             ref={ref}
             {...rest}
