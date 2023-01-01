@@ -1,25 +1,24 @@
 import { classNames } from "@/utils"
 import { forwardRef } from "react"
 
-interface InputProps extends React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement> {
+interface TextareaProps extends React.DetailedHTMLProps<React.TextareaHTMLAttributes<HTMLTextAreaElement>, HTMLTextAreaElement> {
   hasError?: boolean
 }
 
-const Input = forwardRef<HTMLInputElement, InputProps>((props, ref) => {
+const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>((props, ref) => {
 
-  const { hasError, className, ...rest } = props
+  const { hasError, ...rest } = props
 
   return (
-    <input
+    <textarea
       ref={ref}
       {...rest}
       className={classNames(
         "block w-full rounded-md shadow-sm sm:text-sm",
         hasError ? "border-red-300 focus:border-red-500 focus:ring-red-500" : "border-gray-300 focus:border-indigo-500 focus:ring-indigo-500",
-        className ?? "",
       )}
     />
   )
 })
 
-export default Input
+export default Textarea

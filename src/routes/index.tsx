@@ -5,7 +5,6 @@ import Account from "@/pages/account";
 import Admin from "@/pages/admin";
 import AdminStores from "@/pages/admin/stores";
 import AdminUserList from "@/pages/admin/users/List";
-import EntityPage from "@/pages/entity";
 import EntityCustomerOrders from "@/pages/entityAdmin/CustomerOrders";
 import EntityAdminDashboard from "@/pages/entityAdmin/Dashboard"
 import EntityItemCreate from "@/pages/entityAdmin/Items/Create";
@@ -18,6 +17,11 @@ import EntityCreate from "@/pages/myStores/Create";
 import { createBrowserRouter, createRoutesFromElements, Route } from "react-router-dom";
 import BaseLayout from "../layouts/BaseLayout";
 import Home from "../pages/home"
+import EntityItemEdit from "@/pages/entityAdmin/Items/Edit";
+import EntityLayout from "@/pages/entity/components/Layout";
+import EntityHome from "@/pages/entity/home";
+import EntityItem from "@/pages/entity/item";
+import Checkout from "@/pages/entity/checkout";
 
 export const routes = createBrowserRouter(
   createRoutesFromElements(
@@ -37,7 +41,11 @@ export const routes = createBrowserRouter(
         <Route path="stores" element={<AdminStores />} />
       </Route>
       <Route path=":slug">
-        <Route path="" element={<EntityPage />} />
+        <Route element={<EntityLayout />}>
+          <Route path="" element={<EntityHome />} />
+          <Route path="item/:id" element={<EntityItem />} />
+          <Route path="checkout" element={<Checkout />} />
+        </Route>
         <Route path="admin" element={<EntityAdminLayout />}>
           <Route path="" element={<EntityAdminDashboard />} />
           <Route path="products">
@@ -47,7 +55,7 @@ export const routes = createBrowserRouter(
           </Route>
           <Route path="items">
             <Route path="" element={<EntityItems />} />
-            {/* <Route path=":id" element={<ProductEdit />} /> */}
+            <Route path=":id" element={<EntityItemEdit />} />
             <Route path="create" element={<EntityItemCreate />} />
           </Route>
           <Route path="customer-orders" element={<EntityCustomerOrders />} />

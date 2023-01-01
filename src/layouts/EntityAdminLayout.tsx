@@ -198,11 +198,11 @@ export default function EntityAdminLayout() {
               </nav>
             </div>
             <div className="flex flex-shrink-0 border-t border-gray-200 p-4">
-              <Link to="/" className="group w-full flex items-center px-2 py-2 text-sm font-medium rounded-md text-gray-600 hover:bg-gray-50 hover:text-gray-900">
+              <Link to={`/${data?.entity.slug}`} className="group w-full flex items-center px-2 py-2 text-sm font-medium rounded-md text-gray-600 hover:bg-gray-50 hover:text-gray-900">
                 <HomeIcon
                   className='mr-3 flex-shrink-0 h-6 w-6'
                 />
-                Go to home page
+                Go to store
               </Link>
             </div>
             <div className="flex flex-shrink-0 border-t border-gray-200 p-4">

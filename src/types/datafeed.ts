@@ -1,6 +1,7 @@
 export enum Models {
   ENTITY = "ENTITY",
-  PRODUCT = "PRODUCT"
+  PRODUCT = "PRODUCT",
+  ITEM = "ITEM"
 }
 
 export type DatafeedType = {

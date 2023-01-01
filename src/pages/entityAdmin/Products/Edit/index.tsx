@@ -1,25 +1,31 @@
 import { GET_PRODUCT, UPDATE_PRODUCT } from "@/api/products"
+import Spinner from "@/components/Spinner"
 import ProductCreateForm from "@/forms/products/ProductCreateForm"
 import { ProductType, ProductCreateInput } from "@/types"
 import { logError } from "@/utils"
 import { ApolloError, useMutation, useQuery } from "@apollo/client"
+import { useCallback } from "react"
 import { useParams } from "react-router-dom"
 import Photo from "./Photo"
 
 const ProductEdit = () => {
 
   const { id } = useParams<{ id: string }>()
-  const {data, error} = useQuery<{ product: ProductType }>(GET_PRODUCT, { variables: { id }, fetchPolicy: "no-cache" })
+  const {loading: loadingProduct, data, error} = useQuery<{ product: ProductType }>(GET_PRODUCT, { variables: { id }, fetchPolicy: "no-cache" })
 
   const [updateProduct, { loading }] = useMutation<ProductType, { id: string, input: ProductCreateInput }>(UPDATE_PRODUCT)
 
-  const onSubmit = async (formValues: ProductType) => {
+  const onSubmit = useCallback(async (formValues: ProductType) => {
     try {
       // TODO: update cache when success
       await updateProduct({ variables: { id: id ?? "", input: formValues } })
     } catch(e) {
       logError(e as ApolloError)
     }
+  }, [])
+
+  if (loadingProduct) {
+    return <Spinner />
   }
 
   if (error) {

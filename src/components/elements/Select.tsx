@@ -1,13 +1,21 @@
+import { classNames } from "@/utils"
 import { forwardRef } from "react"
 
-interface SelectProps extends React.DetailedHTMLProps<React.SelectHTMLAttributes<HTMLSelectElement>, HTMLSelectElement> {}
+interface SelectProps extends React.DetailedHTMLProps<React.SelectHTMLAttributes<HTMLSelectElement>, HTMLSelectElement> {
+  hasError?: boolean
+}
 
 const Select = forwardRef<HTMLSelectElement, SelectProps>((props, ref) => {
+
+  const { hasError, ...rest } = props
   return (
     <select
       ref={ref}
-      {...props}
-      className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+      {...rest}
+      className={classNames(
+        "block w-full rounded-md shadow-sm sm:text-sm",
+        hasError ? "border-red-300 focus:border-red-500 focus:ring-red-500" : "border-gray-300 focus:border-indigo-500 focus:ring-indigo-500",
+      )}
     />
   )
 })

@@ -1,5 +1,4 @@
 import { useAuthStore } from "@/stores"
-import { ShoppingBagIcon} from "@heroicons/react/24/outline"
 import LoginPopover from "./LoginPopover"
 import { useNavigate } from "react-router-dom"
 import CreateAccountPopover from "./CreateAccountPopover"
@@ -25,10 +24,10 @@ const Nav = (props: NavProps) => {
             {isLogged && <MenuDropdown />}
             {!isLogged && <LoginPopover />}   
           </span>
-          <span className="h-6 w-px bg-gray-200" aria-hidden="true" />
+          {/* <span className="h-6 w-px bg-gray-200" aria-hidden="true" /> */}
           {!isLogged && <CreateAccountPopover />}
         </>}
-        <span className="px-3 flex items-center space-x-2"><ShoppingBagIcon className="h-6 w-6 text-gray-400"/><span>0</span></span>
+        {/* <span className="px-3 flex items-center space-x-2"><ShoppingBagIcon className="h-6 w-6 text-gray-400"/><span>0</span></span> */}
       </div>
     </div>
   </nav>

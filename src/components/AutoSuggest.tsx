@@ -3,8 +3,9 @@ import React, { forwardRef, Ref, useCallback, useEffect, useState } from "react"
 import { CheckIcon, ChevronDownIcon } from "@heroicons/react/24/outline"
 import { classNames } from "@/utils";
 import { useFormContext } from "react-hook-form";
+import Spinner from "./Spinner";
 
-interface GenericRecord extends Record<string, any> {}
+export interface GenericRecord extends Record<string, any> {}
 
 interface AutosuggestType<T> extends React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement> {
   options: T[];
@@ -12,6 +13,8 @@ interface AutosuggestType<T> extends React.DetailedHTMLProps<React.InputHTMLAttr
   hasError?: boolean
   onQueryChange?: (val: string) => void
   onOptionSelect?: (val: T) => void
+  loading?: boolean
+  renderOption?: (obj: T) => React.ReactNode
 }
 
 const AutoSuggest = forwardRef(
@@ -19,7 +22,7 @@ const AutoSuggest = forwardRef(
 
     const { getValues } = useFormContext()
 
-    const { options, resource, hasError, onQueryChange, onOptionSelect, ...rest } = props
+    const { options, resource, hasError, onQueryChange, onOptionSelect, loading, renderOption, ...rest } = props
 
     const [query, setQuery] = useState<string>('')
     const [selectedOption, setSelectedOption] = useState<T | null | undefined>({} as T)
@@ -80,12 +83,12 @@ const AutoSuggest = forwardRef(
             leaveTo="opacity-0"
           >
             <Combobox.Options className="absolute z-10 mt-1 w-full bg-white shadow-lg max-h-60 rounded-md py-1 text-base ring-1 ring-black ring-opacity-5 overflow-auto focus:outline-none sm:text-sm">
-              {filteredOptions.length === 0 && query !== '' ? (
+              {!loading && filteredOptions.length === 0 && query !== '' ? (
                 <div className="relative cursor-default select-none py-2 px-4 text-gray-700">
                   Nothing found.
                 </div>
               ) : (
-                filteredOptions.map((option) => (
+                !loading && filteredOptions.map((option) => (
                   <Combobox.Option
                     key={option.id}
                     className={className}
@@ -96,7 +99,7 @@ const AutoSuggest = forwardRef(
                         <span
                           className={classNames(selected ? 'font-semibold' : 'font-normal', 'block truncate')}
                         >
-                          {option?.[resource]}
+                          {renderOption ? renderOption(option) : option?.[resource]}
                         </span>
                         {selected ? (
                           <span
@@ -113,6 +116,8 @@ const AutoSuggest = forwardRef(
                   </Combobox.Option>
                 ))
               )}
+              {loading && <div className="p-2 flex justify-center">
+                <Spinner color="text-gray-500"/></div>}
             </Combobox.Options>
           </Transition>
         </div>

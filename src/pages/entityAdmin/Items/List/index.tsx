@@ -1,10 +1,10 @@
 import Spinner from "@/components/Spinner"
-import { PageInfo, ProductListInput, ProductListResult } from "@/types"
+import { ItemListInput, ItemListResult, PageInfo } from "@/types"
 import { useQuery } from "@apollo/client"
 import { useEffect, useState } from "react"
 import Pagination from "@/components/Pagination"
 import { Link } from "react-router-dom"
-import { GET_PRODUCTS } from "@/api/products"
+import { GET_ITEMS } from "@/api/products"
 import { useEntityStore } from "@/stores"
 import Inline from "./Inline"
 
@@ -16,10 +16,10 @@ const EntityProducts = () => {
     skip: 0,
     totalCount: 0
   })
-  const { loading, error, data } = useQuery<ProductListResult, ProductListInput>(GET_PRODUCTS, { variables: { filter: { entity: entity?.id ?? "" }, limit: pageInfo.limit, skip: pageInfo.skip }, skip: !entity ? true: false, fetchPolicy: "no-cache" })
+  const { loading, error, data } = useQuery<ItemListResult, ItemListInput>(GET_ITEMS, { variables: { filter: { entity: entity?.id ?? "" }, limit: pageInfo.limit, skip: pageInfo.skip }, skip: !entity ? true: false, fetchPolicy: "no-cache" })
 
   useEffect(()=>{
-    data && setPageInfo(prevState => ({...prevState, totalCount: data.products.totalCount}))
+    data && setPageInfo(prevState => ({...prevState, totalCount: data.items.totalCount}))
   }, [data])
 
   if (loading) {
@@ -67,8 +67,8 @@ const EntityProducts = () => {
                   </tr>
                 </thead>
                 <tbody className="bg-white">
-                  {data?.products.list.map((product, idx) => (
-                    <Inline key={product.id} product={product} idx={idx}/>
+                  {data?.items.list.map((item, idx) => (
+                    <Inline key={item.id} item={item} idx={idx}/>
                   ))}
                 </tbody>
               </table>

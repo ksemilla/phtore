@@ -4,7 +4,7 @@ import { DatafeedInput, Models } from "@/types/datafeed"
 import { classNames, logError } from "@/utils"
 import { ApolloError, useMutation } from "@apollo/client"
 import { PhotoIcon, PlusIcon, PencilSquareIcon, CameraIcon, ArrowUpTrayIcon} from "@heroicons/react/24/outline"
-import { useEffect, useState } from "react"
+import { useCallback, useEffect, useState } from "react"
 import { useDropzone } from "react-dropzone"
 import { useParams } from "react-router-dom"
 
@@ -35,7 +35,7 @@ const Photo = (props: PhotoProps) => {
     },
   })
 
-  const onSave = async () => {
+  const onSave = useCallback(async () => {
     try {
       file && id && await upload({ variables: { input: { file, field: "photo", model: Models.PRODUCT, objectId: id } } })
       setPhoto(preview)
@@ -43,7 +43,7 @@ const Photo = (props: PhotoProps) => {
     } catch(e) {
       logError(e as ApolloError)
     }
-  }
+  }, [file, id, preview, setPhoto, setOpen, Models])
 
   useEffect(()=>{
     url && setPhoto(url)
@@ -73,6 +73,8 @@ const Photo = (props: PhotoProps) => {
     }
   }, [open])
 
+  const timeNow = new Date().valueOf()
+
   return (
     <div
       className={classNames(
@@ -81,13 +83,12 @@ const Photo = (props: PhotoProps) => {
       {!photo && <div className="text-center cursor-pointer text-gray-500 hover:text-gray-700" onClick={()=>setOpen(true)}>
         <PhotoIcon className={classNames(
           "h-32",
-          // errors?.file ? "text-red-500" : "text-gray-300"
         )}/>
         <p className="text-sm">Add a photo</p>
       </div>}
         <div className="">
           <img
-            src={photo}
+            src={`${photo}?${timeNow}`}
             className=""
             onLoad={onImageLoad}
           />
@@ -102,7 +103,7 @@ const Photo = (props: PhotoProps) => {
         open={open}
         setOpen={setOpen}
         acceptText="Set photo"
-        onAccept={() => onSave()}
+        onAccept={onSave}
       >
         <div
           className={classNames(

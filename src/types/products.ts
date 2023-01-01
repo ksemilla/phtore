@@ -54,16 +54,50 @@ export type ItemCategoryType = {
   choices: ItemCategoryChoiceType[]
 }
 
-interface ItemInstance {
-  [key: string]: any
+export type ItemInstanceAttribute = {
+  name: string
+  value: string
+}
+
+export type ItemInstance = {
+  attributes: ItemInstanceAttribute[]
   product: {
     name: string
     id: string
+    photoData: {
+      url: string
+    }
   }
 }
 
 export type ItemType = {
+  id: string
+  entity: string
   name: string,
+  description: string,
   categories: ItemCategoryType[]
   instances:  ItemInstance[]
+}
+
+export type ItemCreateInput = {
+  entity: string
+  name: string,
+  description: string,
+  categories: ItemCategoryType[]
+  instances:  ItemInstance[]
+}
+
+export type ItemListResult = {
+  items: {
+    list: ItemType[]
+    totalCount: number
+  }
+}
+
+export type ItemListInput = {
+  filter: {
+    entity: string
+  }
+  limit?: number
+  skip?: number 
 }

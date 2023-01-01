@@ -25,7 +25,9 @@ const uploadLink = createUploadLink({
 
 export const client = new ApolloClient({
   link: authLink.concat(uploadLink),
-  cache: new InMemoryCache(),
+  cache: new InMemoryCache({
+    addTypename: false
+  }),
 });
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(

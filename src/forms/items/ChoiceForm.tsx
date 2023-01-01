@@ -5,6 +5,7 @@ import { UseFieldArrayRemove, useFormContext } from "react-hook-form"
 
 const ChoiceForm = (props: { parentIdx: number, idx: number, removeChoice: UseFieldArrayRemove }) => {
 
+  const { formState: { errors } } = useFormContext<ItemType>()
   const { idx, parentIdx, removeChoice } = props
   const { register } = useFormContext<ItemType>()
 
@@ -14,6 +15,7 @@ const ChoiceForm = (props: { parentIdx: number, idx: number, removeChoice: UseFi
       <Input
         type="text"
         {...register(`categories.${parentIdx}.choices.${idx}.name`, { required: true })}
+        hasError={errors?.categories?.[parentIdx]?.choices?.[idx]?.name ? true : false}
       />
       <button
         type="button"
