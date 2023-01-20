@@ -50,3 +50,35 @@ export const useSearchDebounce = (delay: number = 350): [string, string, React.D
 
   return [delayedSearch, searchQuery, setSearchQuery]
 }
+
+export const fieldChecker = (o: Record<string, any>, s: string) : boolean => {
+  s = s.replace(/\[(\w+)\]/g, '.$1'); // convert indexes to properties
+    s = s.replace(/^\./, '');           // strip a leading dot
+    let a = s.split('.');
+    for (let i = 0, n = a.length; i < n; ++i) {
+        let k = a[i];
+        if (k in o) {
+            o = o[k];
+        } else {
+            return false;
+            // return
+        }
+    }
+    return true
+    // return o;
+}
+
+export const getValueFromErrors = (o: Record<string, any>, s: string) : Record<string, any> | undefined => {
+  s = s.replace(/\[(\w+)\]/g, '.$1'); // convert indexes to properties
+    s = s.replace(/^\./, '');           // strip a leading dot
+    let a = s.split('.');
+    for (let i = 0, n = a.length; i < n; ++i) {
+        let k = a[i];
+        if (k in o) {
+            o = o[k];
+        } else {
+            return
+        }
+    }
+    return o;
+}

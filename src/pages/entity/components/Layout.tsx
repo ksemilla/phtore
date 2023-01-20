@@ -1,7 +1,8 @@
-import { GET_ENTITY } from "@/api"
+import { GET_ENTITY, useQueryDeliveryMethodList } from "@/api"
 import { useEntityStore } from "@/stores"
 import { EntityType } from "@/types"
-import { useQuery } from "@apollo/client"
+import { logError } from "@/utils"
+import { ApolloError, useQuery } from "@apollo/client"
 import { useEffect, useState } from "react"
 import { Outlet, useParams } from "react-router-dom"
 import Nav from "./Nav"
@@ -9,7 +10,9 @@ import OrderSummary from "./OrderSummary"
 
 const EntityLayout = () => {
 
+  const [getDeliveryMethods] = useQueryDeliveryMethodList()
   const setEntity = useEntityStore(state => state.setEntity)
+  const setDeliveryMethods = useEntityStore(state=>state.setDeliveryMethods)
   const { slug } = useParams<{ slug: string }>()
   const {data} = useQuery<{ entity: EntityType }>(GET_ENTITY, { variables: { slug }, fetchPolicy: "no-cache" })
   const [showOrderSummary, setShowOrderSummary] = useState<boolean>(false)
@@ -18,6 +21,21 @@ const EntityLayout = () => {
     data && (()=>{
       setEntity(data.entity)
     })()
+  }, [data])
+
+  useEffect(()=>{
+
+    const getQuery = async () => {
+      try {
+        const res = await getDeliveryMethods({ variables: { filter: { entity: data?.entity.id ?? "" } } })
+        setDeliveryMethods(res.data?.deliveryMethods?.list ?? [])
+      } catch(e) {
+        logError(e as ApolloError)
+      }
+    }
+
+    data && getQuery()
+
   }, [data])
 
   return (

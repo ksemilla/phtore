@@ -22,6 +22,7 @@ import EntityLayout from "@/pages/entity/components/Layout";
 import EntityHome from "@/pages/entity/home";
 import EntityItem from "@/pages/entity/item";
 import Checkout from "@/pages/entity/checkout";
+import Customers from "@/pages/entityAdmin/Customers";
 
 export const routes = createBrowserRouter(
   createRoutesFromElements(
@@ -59,6 +60,9 @@ export const routes = createBrowserRouter(
             <Route path="create" element={<EntityItemCreate />} />
           </Route>
           <Route path="customer-orders" element={<EntityCustomerOrders />} />
+          <Route path="customers" element={<Customers />}>
+
+          </Route>
         </Route>
       </Route>
     </Route>

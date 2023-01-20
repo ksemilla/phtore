@@ -13,10 +13,9 @@ const Input = forwardRef<HTMLInputElement, InputProps>((props, ref) => {
     <input
       ref={ref}
       {...rest}
-      className={classNames(
+      className={className ?? classNames(
         "block w-full rounded-md shadow-sm sm:text-sm",
-        hasError ? "border-red-300 focus:border-red-500 focus:ring-red-500" : "border-gray-300 focus:border-indigo-500 focus:ring-indigo-500",
-        className ?? "",
+        hasError ? "border-red-300 focus:border-red-500 focus:ring-red-500" : "border-gray-300 focus:border-indigo-500 focus:ring-indigo-500"
       )}
     />
   )

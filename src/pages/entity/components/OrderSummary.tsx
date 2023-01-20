@@ -16,6 +16,7 @@ export default function OrderSummary(props: OrderSummaryProps) {
 
   const navigate = useNavigate()
   const entity = useEntityStore(state=>state.entity)
+  const deliveryMethods = useEntityStore(state=>state.deliveryMethods)
   const order = useCartStore(state=>state.order)
   const { show, setShow } = props
 
@@ -99,7 +100,7 @@ export default function OrderSummary(props: OrderSummaryProps) {
                                 </div>
                                 <div className='w-72 flex justify-between py-2'>
                                   <div className='flex text-gray-500 text-sm'>Shipping <QuestionMarkCircleIcon className='w-4'/></div>
-                                  <div className='text-gray-800'>&#8369; 0</div>
+                                  <div className='text-gray-800'>&#8369; {deliveryMethods?.[0]?.sellPrice}</div>
                                 </div>
                                 <div className='w-72 flex justify-between py-2'>
                                   <div className='flex text-gray-900'>Total</div>

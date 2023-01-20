@@ -38,3 +38,22 @@ export type EntityListInput = {
   limit?: number
   skip?: number 
 }
+
+export type DeliveryMethod = {
+  id: string,
+  entity: string
+  name: string
+  description: string
+  sellPrice: number
+  listPrice: number
+  score: number
+}
+
+export type DeliveryMethodCreateInput = {
+  entity: string
+  name: string
+  description: string
+  sellPrice: number
+  listPrice: number
+  score: number
+}

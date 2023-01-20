@@ -35,6 +35,7 @@ const navigation: NavItem[] = [
   { name: 'Items', path: 'items', icon: UsersIcon },
   { name: 'Customer Orders', path: 'customer-orders', icon: FolderIcon },
   { name: 'Invoices', path: 'invoices', icon: InboxIcon },
+  { name: 'Customers', path: 'customers', icon: ChartBarIcon },
   { name: 'Reports', path: 'reports', icon: ChartBarIcon },
   { name: 'Members', path: 'members', icon: ChartBarIcon },
 ]

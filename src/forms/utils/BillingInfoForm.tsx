@@ -1,7 +1,7 @@
 import useFormElements from "@/hooks/hookForm/useFormElements"
 import { Order } from "@/types"
 
-const ShippingInfoForm = () => {
+const BillingInfoForm = () => {
 
   const { TextInput } = useFormElements<Order>()
 
@@ -10,48 +10,48 @@ const ShippingInfoForm = () => {
       <div className="grid grid-cols-12 gap-4">
         <div className="md:col-span-12">
           <TextInput
-            name="shippingInfo.company"
+            name="billingInfo.company"
             label="Company"
           />
         </div>
         <div className="md:col-span-6">
           <TextInput
-            name="shippingInfo.address1"
+            name="billingInfo.address1"
             label="Address 1"
             rules={{ required: true }}
           />
         </div>
         <div className="md:col-span-6">
           <TextInput
-            name="shippingInfo.address2"
+            name="billingInfo.address2"
             label="Address 2"
             rules={{ required: true }}
           />
         </div>
         <div className="md:col-span-3">
           <TextInput
-            name="shippingInfo.suburb"
+            name="billingInfo.suburb"
             label="Brgy"
             rules={{ required: true }}
           />
         </div>
         <div className="md:col-span-3">
           <TextInput
-            name="shippingInfo.city"
+            name="billingInfo.city"
             label="City"
             rules={{ required: true }}
           />
         </div>
         <div className="md:col-span-3">
           <TextInput
-            name="shippingInfo.state"
+            name="billingInfo.state"
             label="Province"
             rules={{ required: true }}
           />
         </div>
         <div className="md:col-span-3">
           <TextInput
-            name="shippingInfo.zipCode"
+            name="billingInfo.zipCode"
             label="Postal"
           />
         </div>
@@ -60,4 +60,4 @@ const ShippingInfoForm = () => {
   )
 }
 
-export default ShippingInfoForm
+export default BillingInfoForm

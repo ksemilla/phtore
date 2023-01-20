@@ -1,5 +1,6 @@
 import { useEntityStore } from "@/stores"
 import Banner from "./Banner"
+import DeliveryMethods from "./DeliveryMethods"
 
 const EntityAdminDashboard = () => {
 
@@ -32,6 +33,11 @@ const EntityAdminDashboard = () => {
                   </h2>
                   <Banner url={entity?.bannerData.url} />
                 </div>
+              </div>
+            </div>
+            <div className="space-y-6 lg:col-span-3">
+              <div className="bg-white shadow sm:rounded-lg">
+                <DeliveryMethods />
               </div>
             </div>
           </div>
