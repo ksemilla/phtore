@@ -1,73 +1,87 @@
-import Input from "@/components/elements/Input"
-import Label from "@/components/elements/Label"
+import Form from "@/hooks/hookForm"
+import useFormElements from "@/hooks/hookForm/useFormElements"
 import { DeliveryMethod } from "@/types"
-import { useForm } from "react-hook-form"
+import { SubmitHandler } from "react-hook-form"
 
 type DeliveryMethodFormProps = {
-  onSubmit: (val: DeliveryMethod) => void
+  onSubmit: SubmitHandler<DeliveryMethod>
   defaultValues?: DeliveryMethod
 }
 
 const DeliveryMethodForm = (props: DeliveryMethodFormProps) => {
+  const { onSubmit, defaultValues } = props
 
-  const { onSubmit: onSubmitProps, defaultValues } = props
-  const {register, handleSubmit} = useForm<DeliveryMethod>({
-    defaultValues
-  })
-
-  const onSubmit = handleSubmit((data) => {
-    onSubmitProps(data)
-  })
+  const { TextInput, NumberInput } = useFormElements<DeliveryMethod>()
 
   return (
-    <form id="delivery-method-form" onSubmit={onSubmit}>
+    <Form<DeliveryMethod>
+      id="delivery-method-form"
+      onSubmit={onSubmit}
+      defaultValues={defaultValues}
+    >
       <div className="grid grid-cols-12 gap-4">
         <div className="col-span-12">
-          <Label>Name</Label>
-          <Input
-            type="text"
-            {...register("name", { required: true })}
+          <TextInput
+            name="name"
+            label="Name"
+            rules={{
+              required: true,
+            }}
           />
         </div>
         <div className="col-span-12">
-          <Label>Description</Label>
-          <Input
-            type="text"
-            {...register("description", { required: true })}
+          <TextInput
+            name="description"
+            label="Description"
+            rules={{
+              required: true,
+            }}
           />
         </div>
         <div className="col-span-12 md:col-span-6">
-          <Label>Sell Price</Label>
-          <Input
-            id="visible-arrow"
-            type="number"
-            min={0}
-            defaultValue="0"
-            {...register("sellPrice", { required: true })}
+          <NumberInput
+            name="sellPrice"
+            label="Sell Price"
+            rules={{
+              required: true,
+              min: {
+                value: 0,
+                message: "Minimum of 0",
+              },
+            }}
+            visibleArrows
           />
         </div>
         <div className="col-span-12 md:col-span-6">
-          <Label>List Price</Label>
-          <Input
-            id="visible-arrow"
-            type="number"
-            min={0}
-            defaultValue="0"
-            {...register("listPrice", { required: true })}
+          <NumberInput
+            name="listPrice"
+            label="List Price"
+            rules={{
+              required: true,
+              min: {
+                value: 0,
+                message: "Minimum of 0",
+              },
+            }}
+            visibleArrows
           />
         </div>
         <div className="col-span-12 md:col-span-6">
-          <Label>Score</Label>
-          <Input
-            id="visible-arrow"
-            type="number"
-            min={0}
-            defaultValue="0"
-            {...register("score", { required: true })}
+          <NumberInput
+            name="score"
+            label="Score"
+            rules={{
+              required: true,
+              min: {
+                value: 0,
+                message: "Minimum of 0",
+              },
+            }}
+            visibleArrows
           />
         </div>
       </div>
-    </form>
+    </Form>
   )
 }
 

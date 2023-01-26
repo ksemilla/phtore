@@ -1,11 +1,11 @@
-import { Fragment, useState } from 'react'
-import { Dialog, Transition } from '@headlessui/react'
-import { XMarkIcon } from '@heroicons/react/24/outline'
+import { Fragment, useState } from "react"
+import { Dialog, Transition } from "@headlessui/react"
+import { XMarkIcon } from "@heroicons/react/24/outline"
 import { QuestionMarkCircleIcon } from "@heroicons/react/24/solid"
-import { useEntityStore } from '@/stores'
-import useCartStore from '@/stores/cart'
-import OrderItem from './OrderItem'
-import { useNavigate } from 'react-router-dom'
+import { useEntityStore } from "@/stores"
+import useCartStore from "@/stores/cart"
+import OrderItem from "./OrderItem"
+import { useNavigate } from "react-router-dom"
 
 type OrderSummaryProps = {
   show: boolean
@@ -13,15 +13,14 @@ type OrderSummaryProps = {
 }
 
 export default function OrderSummary(props: OrderSummaryProps) {
-
   const navigate = useNavigate()
-  const entity = useEntityStore(state=>state.entity)
-  const deliveryMethods = useEntityStore(state=>state.deliveryMethods)
-  const order = useCartStore(state=>state.order)
+  const entity = useEntityStore((state) => state.entity)
+  const deliveryMethods = useEntityStore((state) => state.deliveryMethods)
+  const order = useCartStore((state) => state.order)
   const { show, setShow } = props
 
-  const total = order.items.reduce((acc, obj)=>{
-    return acc + (obj.sellPrice * obj.quantity)
+  const total = order.orderItems.reduce((acc, obj) => {
+    return acc + obj.sellPrice * obj.quantity
   }, 0)
 
   return (
@@ -74,14 +73,16 @@ export default function OrderSummary(props: OrderSummaryProps) {
                   </Transition.Child>
                   <div className="flex h-full flex-col overflow-y-scroll bg-white py-6 shadow-xl divide-y-2">
                     <div className="px-4 sm:px-6">
-                      <Dialog.Title className="text-lg font-medium text-gray-900">Order Summary</Dialog.Title>
+                      <Dialog.Title className="text-lg font-medium text-gray-900">
+                        Order Summary
+                      </Dialog.Title>
                     </div>
                     <div className="relative mt-6 flex-1 px-4 sm:px-6">
                       {/* Replace with your content */}
                       <div className="absolute inset-0 px-4 sm:px-6 divide-y">
                         {/* <div className="h-full border-2 border-dashed border-gray-200" aria-hidden="true" /> */}
-                        <div className='space-y-6 py-4'>
-                          {order.items.map((item, idx) => (
+                        <div className="space-y-6 py-4">
+                          {order.orderItems.map((item, idx) => (
                             <OrderItem
                               key={item.uuid}
                               orderItem={item}
@@ -90,31 +91,44 @@ export default function OrderSummary(props: OrderSummaryProps) {
                             />
                           ))}
                         </div>
-                        <div className='space-y-2 py-2'>
-                          <div className='flex justify-end'>
-                            <div className='bg-gray-50 rounded'>
-                              <div className='divide-y space-y-2 px-4 py-6'>
-                                <div className='w-72 flex justify-between'>
-                                  <div className='text-gray-500 text-sm'>Subtotal</div>
-                                  <div className='text-gray-800'>&#8369; {total.toFixed(2)}</div>
+                        <div className="space-y-2 py-2">
+                          <div className="flex justify-end">
+                            <div className="bg-gray-50 rounded">
+                              <div className="divide-y space-y-2 px-4 py-6">
+                                <div className="w-72 flex justify-between">
+                                  <div className="text-gray-500 text-sm">
+                                    Subtotal
+                                  </div>
+                                  <div className="text-gray-800">
+                                    &#8369; {total.toFixed(2)}
+                                  </div>
                                 </div>
-                                <div className='w-72 flex justify-between py-2'>
-                                  <div className='flex text-gray-500 text-sm'>Shipping <QuestionMarkCircleIcon className='w-4'/></div>
-                                  <div className='text-gray-800'>&#8369; {deliveryMethods?.[0]?.sellPrice}</div>
+                                <div className="w-72 flex justify-between py-2">
+                                  <div className="flex text-gray-500 text-sm">
+                                    Shipping{" "}
+                                    <QuestionMarkCircleIcon className="w-4" />
+                                  </div>
+                                  <div className="text-gray-800">
+                                    &#8369; {deliveryMethods?.[0]?.sellPrice}
+                                  </div>
                                 </div>
-                                <div className='w-72 flex justify-between py-2'>
-                                  <div className='flex text-gray-900'>Total</div>
+                                <div className="w-72 flex justify-between py-2">
+                                  <div className="flex text-gray-900">
+                                    Total
+                                  </div>
                                   <div>&#8369; {total.toFixed(2)}</div>
                                 </div>
                               </div>
-                              <div className='w-full box-border flex justify-between py-2'>
+                              <div className="w-full box-border flex justify-between py-2">
                                 <button
-                                  className='bg-indigo-600 w-full rounded p-2 m-2 text-white hover:bg-indigo-700'
-                                  onClick={()=>{
+                                  className="bg-indigo-600 w-full rounded p-2 m-2 text-white hover:bg-indigo-700"
+                                  onClick={() => {
                                     navigate(`/${entity?.slug}/checkout`)
                                     setShow(false)
                                   }}
-                                >Checkout</button>
+                                >
+                                  Checkout
+                                </button>
                               </div>
                             </div>
                           </div>

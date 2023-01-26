@@ -1,7 +1,12 @@
 import Input from "@/components/elements/Input"
 import Label from "@/components/elements/Label"
 import { classNames, fieldChecker } from "@/utils"
-import { FieldValues, Path, RegisterOptions, useFormContext } from "react-hook-form"
+import {
+  FieldValues,
+  Path,
+  RegisterOptions,
+  useFormContext,
+} from "react-hook-form"
 import FormGroup from "./FormGroup"
 
 interface FieldInputProps<T> {
@@ -15,17 +20,19 @@ interface CheckboxInputProps<T> extends Omit<FieldInputProps<T>, "label"> {
   label: string
 }
 
-const useFormElements = <T extends FieldValues>() => {
+interface NumberInputProps<T> extends FieldInputProps<T> {
+  visibleArrows?: boolean
+}
 
+const useFormElements = <T extends FieldValues>() => {
   const TextInput = (props: FieldInputProps<T>) => {
-    const { register, formState: { errors } } = useFormContext<T>()
+    const {
+      register,
+      formState: { errors },
+    } = useFormContext<T>()
     const { name, rules, label } = props
     return (
-      <FormGroup
-        name={name}
-        label={label}
-        rules={rules}
-      >
+      <FormGroup name={name} label={label} rules={rules}>
         <Input
           type="text"
           {...register(name, rules)}
@@ -35,18 +42,21 @@ const useFormElements = <T extends FieldValues>() => {
     )
   }
 
-  const NumberInput = (props: FieldInputProps<T>) => {
-    const { register, formState: { errors } } = useFormContext<T>()
-    const { name, rules, label } = props
+  const NumberInput = (props: NumberInputProps<T>) => {
+    const {
+      register,
+      formState: { errors },
+    } = useFormContext<T>()
+    const { name, rules, label, visibleArrows } = props
     return (
-      <FormGroup
-        name={name}
-        label={label}
-        rules={rules}
-      >
+      <FormGroup name={name} label={label} rules={rules}>
         <Input
+          id={visibleArrows ? "visible-arrow" : ""}
           type="number"
-          {...register(name, {...rules, setValueAs: val => parseFloat(val)})}
+          {...register(name, {
+            ...rules,
+            setValueAs: (val) => parseFloat(val),
+          })}
           hasError={fieldChecker(errors, name)}
         />
       </FormGroup>
@@ -57,10 +67,12 @@ const useFormElements = <T extends FieldValues>() => {
     const { register } = useFormContext<T>()
     const { name, rules, label, reverse } = props
     return (
-      <div className={classNames(
-        "flex items-center gap-x-2",
-        reverse ? "flex-row-reverse" : ""
-      )}>
+      <div
+        className={classNames(
+          "flex items-center gap-x-2",
+          reverse ? "flex-row-reverse" : ""
+        )}
+      >
         <Input
           type="checkbox"
           {...register(name, rules)}

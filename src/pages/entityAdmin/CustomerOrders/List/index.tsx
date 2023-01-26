@@ -1,48 +1,39 @@
-import Spinner from "@/components/Spinner"
-import { PageInfo, ProductListInput, ProductListResult } from "@/types"
-import { useQuery } from "@apollo/client"
-import { useEffect, useState } from "react"
+import { useListOrder } from "@/api/order"
 import Pagination from "@/components/Pagination"
-import { Link } from "react-router-dom"
-import { GET_PRODUCTS } from "@/api/products"
+import Spinner from "@/components/Spinner"
 import { useEntityStore } from "@/stores"
+import { OrderStatus, PageInfo } from "@/types"
+import { useEffect, useState } from "react"
+import { Link } from "react-router-dom"
 import Inline from "./Inline"
 
-const EntityItems = () => {
+const EntityCustomerOrders = () => {
   const entity = useEntityStore((state) => state.entity)
   const [pageInfo, setPageInfo] = useState<PageInfo>({
     limit: 10,
     skip: 0,
     totalCount: 0,
   })
-  const { loading, error, data } = useQuery<
-    ProductListResult,
-    ProductListInput
-  >(GET_PRODUCTS, {
-    variables: {
-      filter: { entity: entity?.id ?? "" },
-      limit: pageInfo.limit,
-      skip: pageInfo.skip,
-    },
-    skip: !entity ? true : false,
-    fetchPolicy: "no-cache",
+  const { data, loading, error } = useListOrder({
+    entity: entity?.id ?? "",
+    limit: pageInfo.limit,
+    skip: pageInfo.skip,
   })
 
   useEffect(() => {
     data &&
       setPageInfo((prevState) => ({
         ...prevState,
-        totalCount: data.products.totalCount,
+        totalCount: data.orders.totalCount,
       }))
   }, [data])
 
-  if (loading) {
-    return <Spinner />
-  }
-
-  if (error) {
-    return <div>[Error] {error.message}</div>
-  }
+  if (loading)
+    return (
+      <div className="flex justify-center py-10">
+        <Spinner color="text-black" size={6} />
+      </div>
+    )
 
   return (
     <div className="p-6">
@@ -74,13 +65,13 @@ const EntityItems = () => {
                       scope="col"
                       className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6"
                     >
-                      Code
+                      Customer
                     </th>
                     <th
                       scope="col"
                       className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
                     >
-                      Name
+                      Total
                     </th>
                     <th
                       scope="col"
@@ -91,8 +82,8 @@ const EntityItems = () => {
                   </tr>
                 </thead>
                 <tbody className="bg-white">
-                  {data?.products.list.map((product, idx) => (
-                    <Inline key={product.id} product={product} idx={idx} />
+                  {data?.orders.list.map((order, idx) => (
+                    <Inline key={order.id} order={order} idx={idx} />
                   ))}
                 </tbody>
               </table>
@@ -105,4 +96,4 @@ const EntityItems = () => {
   )
 }
 
-export default EntityItems
+export default EntityCustomerOrders

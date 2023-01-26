@@ -1,7 +1,5 @@
-import useProductStore from '@/stores/products';
-import { ProductType } from '@/types';
-import { QueryResult, useQuery } from '@apollo/client'
-import { gql } from "@apollo/client";
+import { ProductType } from "@/types"
+import { useQuery, gql } from "@apollo/client"
 
 export const CREATE_PRODUCT = gql`
   mutation CreateProduct($input: ProductCreateInput!) {
@@ -142,21 +140,9 @@ export const UPDATE_ITEM = gql`
   }
 `
 
-export const getProductLiteral = (fields: Record<string, any>) => {
-  return gql`
-    query Product($id: String!) {
-      product(id: $id) {
-        entity
-        ${fields.code ? "code" : ""}
-        ${fields.name ? "name" : ""}
-        photoData {
-          url
-        }
-      }
-    }
-  `
-}
-
 export const useQueryProduct = (id: string) => {
-  return useQuery<{ product: ProductType }>(GET_PRODUCT, { variables: { id }, fetchPolicy: "no-cache" })
+  return useQuery<{ product: ProductType }>(GET_PRODUCT, {
+    variables: { id },
+    fetchPolicy: "no-cache",
+  })
 }

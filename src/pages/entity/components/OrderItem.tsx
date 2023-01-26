@@ -12,18 +12,15 @@ type OrderItemProps = {
 }
 
 const OrderItem = (props: OrderItemProps) => {
-
-  const setOrder = useCartStore(state => state.setOrder)
-  const order = useCartStore(state => state.order)
-  const {orderItem, idx, setShow} = props
-  const {data} = useQueryProduct(orderItem.product)
+  const setOrder = useCartStore((state) => state.setOrder)
+  const order = useCartStore((state) => state.order)
+  const { orderItem, idx, setShow } = props
+  const { data } = useQueryProduct(orderItem.product)
 
   return (
     <div className="flex space-x-3">
       <div className="w-32 rounded-md overflow-hidden">
-        <Img
-          src={data?.product.photoData.url}
-        />
+        <Img src={data?.product.photoData.url} />
       </div>
       <div className="flex flex-1 justify-between">
         <div className="py-1">
@@ -40,19 +37,19 @@ const OrderItem = (props: OrderItemProps) => {
             id="visible-arrow"
             min="1"
             value={orderItem.quantity}
-            onChange={e=>{
+            onChange={(e) => {
               setOrder({
                 ...order,
-                items: order.items.map((item, i) => {
+                orderItems: order.orderItems.map((item, i) => {
                   if (i !== idx) {
                     return item
                   } else {
                     return {
                       ...item,
-                      quantity: parseInt(e.target.value)
+                      quantity: parseInt(e.target.value),
                     }
                   }
-                })
+                }),
               })
             }}
             className="w-24 inline"
@@ -61,14 +58,14 @@ const OrderItem = (props: OrderItemProps) => {
         <div>
           <XMarkIcon
             className="w-5 cursor-pointer hover:text-red-500"
-            onClick={()=>{
+            onClick={() => {
               setOrder({
                 ...order,
-                items: order.items.filter((_, i) => i !== idx)
+                orderItems: order.orderItems.filter((_, i) => i !== idx),
               })
-              if (order.items.length <= 1) setShow(false)
+              if (order.orderItems.length <= 1) setShow(false)
             }}
-            />
+          />
         </div>
       </div>
     </div>

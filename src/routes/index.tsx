@@ -1,28 +1,32 @@
-import AdminLayout from "@/layouts/AdminLayout";
-import AdminUserLayout from "@/layouts/AdminUserLayout";
-import EntityAdminLayout from "@/layouts/EntityAdminLayout";
-import Account from "@/pages/account";
-import Admin from "@/pages/admin";
-import AdminStores from "@/pages/admin/stores";
-import AdminUserList from "@/pages/admin/users/List";
-import EntityCustomerOrders from "@/pages/entityAdmin/CustomerOrders";
+import AdminLayout from "@/layouts/AdminLayout"
+import AdminUserLayout from "@/layouts/AdminUserLayout"
+import EntityAdminLayout from "@/layouts/EntityAdminLayout"
+import Account from "@/pages/account"
+import Admin from "@/pages/admin"
+import AdminStores from "@/pages/admin/stores"
+import AdminUserList from "@/pages/admin/users/List"
 import EntityAdminDashboard from "@/pages/entityAdmin/Dashboard"
-import EntityItemCreate from "@/pages/entityAdmin/Items/Create";
-import EntityProductCreate from "@/pages/entityAdmin/Products/Create";
-import ProductEdit from "@/pages/entityAdmin/Products/Edit";
-import EntityItems from "@/pages/entityAdmin/Items/List";
-import EntityProductList from "@/pages/entityAdmin/Products/List";
-import MyStores from "@/pages/myStores";
-import EntityCreate from "@/pages/myStores/Create";
-import { createBrowserRouter, createRoutesFromElements, Route } from "react-router-dom";
-import BaseLayout from "../layouts/BaseLayout";
+import EntityItemCreate from "@/pages/entityAdmin/Items/Create"
+import EntityProductCreate from "@/pages/entityAdmin/Products/Create"
+import ProductEdit from "@/pages/entityAdmin/Products/Edit"
+import EntityItems from "@/pages/entityAdmin/Items/List"
+import EntityProductList from "@/pages/entityAdmin/Products/List"
+import MyStores from "@/pages/myStores"
+import EntityCreate from "@/pages/myStores/Create"
+import {
+  createBrowserRouter,
+  createRoutesFromElements,
+  Route,
+} from "react-router-dom"
+import BaseLayout from "../layouts/BaseLayout"
 import Home from "../pages/home"
-import EntityItemEdit from "@/pages/entityAdmin/Items/Edit";
-import EntityLayout from "@/pages/entity/components/Layout";
-import EntityHome from "@/pages/entity/home";
-import EntityItem from "@/pages/entity/item";
-import Checkout from "@/pages/entity/checkout";
-import Customers from "@/pages/entityAdmin/Customers";
+import EntityItemEdit from "@/pages/entityAdmin/Items/Edit"
+import EntityLayout from "@/pages/entity/components/Layout"
+import EntityHome from "@/pages/entity/home"
+import EntityItem from "@/pages/entity/item"
+import Checkout from "@/pages/entity/checkout"
+import Customers from "@/pages/entityAdmin/Customers"
+import { EntityCustomerOrderDetail, EntityCustomerOrders } from "@/pages"
 
 export const routes = createBrowserRouter(
   createRoutesFromElements(
@@ -59,10 +63,11 @@ export const routes = createBrowserRouter(
             <Route path=":id" element={<EntityItemEdit />} />
             <Route path="create" element={<EntityItemCreate />} />
           </Route>
-          <Route path="customer-orders" element={<EntityCustomerOrders />} />
-          <Route path="customers" element={<Customers />}>
-
+          <Route path="customer-orders">
+            <Route path="" element={<EntityCustomerOrders />} />
+            <Route path=":id" element={<EntityCustomerOrderDetail />} />
           </Route>
+          <Route path="customers" element={<Customers />}></Route>
         </Route>
       </Route>
     </Route>

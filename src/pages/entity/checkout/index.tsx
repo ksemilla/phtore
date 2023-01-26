@@ -1,14 +1,12 @@
-import Input from "@/components/elements/Input"
-import Label from "@/components/elements/Label"
+import { useCreateOrder } from "@/api/order"
 import BillingInfoForm from "@/forms/utils/BillingInfoForm"
-import ShippingInfoForm from "@/forms/utils/ShippingInfoForm"
 import Form from "@/hooks/hookForm"
-import useFormElements from "@/hooks/hookForm/useFormElements"
-import { useEntityStore } from "@/stores"
+import { useAuthStore, useEntityStore } from "@/stores"
 import useCartStore from "@/stores/cart"
-import { Order } from "@/types/orders"
-import { useEffect, useState } from "react"
-import { FormProvider, useForm } from "react-hook-form"
+import { CustomerType, Order } from "@/types/orders"
+import { logError } from "@/utils"
+import { ApolloError } from "@apollo/client"
+import { useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 import ContactInfo from "./ContactInfo"
 import DeliveryMethods from "./DeliveryMethods"
@@ -16,32 +14,46 @@ import OrderSummary from "./OrderSummary"
 import ShippingInfo from "./ShippingInfo"
 
 const Checkout = () => {
-
-  const entity = useEntityStore(state=>state.entity)
+  const user = useAuthStore((state) => state.user)
+  const entity = useEntityStore((state) => state.entity)
+  const deliveryMethods = useEntityStore((state) => state.deliveryMethods)
   const navigate = useNavigate()
-  const order = useCartStore(state=>state.order)
-  const deliveryMethods = useEntityStore(state=>state.deliveryMethods)
-  const { CheckboxInput } = useFormElements<Order>()
-  const methods = useForm<Order>({
-    defaultValues: {
-      shippingFee: deliveryMethods?.[0]?.sellPrice ?? 0
-    }
-  })
+  const order = useCartStore((state) => state.order)
+  const [createOrder] = useCreateOrder()
 
-  useEffect(()=>{
-    if (order.items.length <= 0 && entity?.slug) {
+  useEffect(() => {
+    if (order.orderItems.length <= 0 && entity?.slug) {
       navigate(`/${entity?.slug}`)
     }
   }, [entity?.slug])
 
-  const onSubmit = (data: Order) => {
+  const onSubmit = async (data: Order) => {
+    data.orderItems = order.orderItems.map(({ uuid, ...rest }) => rest)
+    data.customerType = CustomerType.USER
+    data.customer = user?.id ?? ""
+    data.entity = entity?.id ?? ""
     console.log("data", data)
+    try {
+      const res = await createOrder({ variables: { input: data } })
+      console.log(res)
+    } catch (e) {
+      logError(e as ApolloError)
+    }
   }
 
   return (
     <Form<Order>
       onSubmit={onSubmit}
-      >
+      defaultValues={{
+        customerData: {
+          firstName: user?.firstName,
+          lastName: user?.lastName,
+          email: user?.email,
+          mobile: user?.mobile,
+        },
+        shippingFee: deliveryMethods?.[0]?.sellPrice ?? 0,
+      }}
+    >
       <div className="max-w-6xl m-auto bg-gray-50 grid grid-cols-6 gap-4">
         <div className="col-span-3 p-4 divide-y divide-gray-200 space-y-4">
           <div className="space-y-4 pb-4">
@@ -55,34 +67,6 @@ const Checkout = () => {
           <div className="py-4 space-y-4">
             <ShippingInfo />
           </div>
-        </div>
-      </div>
-      <button type="submit">save</button>
-    </Form>
-  )
-
-  return (
-    <FormProvider {...methods}>
-      <div className="max-w-6xl m-auto bg-gray-50 grid grid-cols-6 gap-4">
-        <div className="col-span-3 p-4 divide-y divide-gray-200 space-y-4">
-          <div className="space-y-4 pb-4">
-            <h1 className="text-lg">Contact Information</h1>
-            <ContactInfo />
-          </div>
-          <div className="py-4 space-y-4">
-            <h1 className="text-lg">Billing Address</h1>
-            <BillingInfoForm />
-          </div>
-          <div className="py-4 space-y-4">
-            <h1 className="text-lg">Shipping Address</h1>
-            <div className="flex items-center space-x-2 py-2">
-              <Input
-                type="checkbox"
-                className="block h-4 w-4 rounded-sm"
-              />
-              <Label>Same as billing address</Label>
-            </div>
-          </div>
           <div className="py-4 space-y-4">
             <h1 className="text-lg">Delivery Method</h1>
             <DeliveryMethods />
@@ -93,7 +77,7 @@ const Checkout = () => {
           <OrderSummary />
         </div>
       </div>
-    </FormProvider>
+    </Form>
   )
 }
 

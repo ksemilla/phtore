@@ -2,8 +2,8 @@ import { CreateResponse } from "./core"
 import { EntityType } from "./entity"
 
 export enum UserRoles {
-  ADMIN = 'ADMIN',
-  USER = 'USER'
+  ADMIN = "ADMIN",
+  USER = "USER",
 }
 
 export type UserType = {
@@ -11,6 +11,8 @@ export type UserType = {
   email: string
   role: UserRoles
   name?: string
+  firstName: string
+  lastName: string
   locked: boolean
   phone: string
   mobile: string
@@ -50,9 +52,9 @@ export type UserListResult = {
 
 export type UserListInput = {
   filter?: {
-    email?:  string
+    email?: string
     name?: string
   }
   limit?: number
-  skip?: number 
+  skip?: number
 }

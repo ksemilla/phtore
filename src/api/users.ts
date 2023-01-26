@@ -1,4 +1,4 @@
-import { gql } from "@apollo/client";
+import { gql } from "@apollo/client"
 
 export const GET_USERS = gql`
   query GetUsers($filter: UserFilterOptions!, $limit: Int, $skip: Int) {
@@ -6,6 +6,8 @@ export const GET_USERS = gql`
       list {
         id
         email
+        firstName
+        lastName
         name
         locked
         role
