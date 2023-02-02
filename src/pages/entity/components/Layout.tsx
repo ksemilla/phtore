@@ -32,7 +32,6 @@ const EntityLayout = () => {
         const res = await getDeliveryMethods({
           variables: { filter: { entity: data?.entity.id ?? "" } },
         })
-        console.log("res", res)
         setDeliveryMethods(res.data?.deliveryMethods?.list ?? [])
       } catch (e) {
         logError(e as ApolloError)

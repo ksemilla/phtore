@@ -36,6 +36,29 @@ const LIST_ORDER = gql`
   }
 `
 
+const FETCH_ORDER = gql`
+  query Order($id: String!) {
+    order(id: $id) {
+      id
+      entity
+      customer
+      customerType
+      customerData
+      shippingFee
+      billingInfo
+      shippingSameAsBilling
+      shippingInfo
+      orderItems {
+        product
+        sellPrice
+        listPrice
+        quantity
+      }
+      status
+    }
+  }
+`
+
 export const useCreateOrder = () => {
   return useMutation<{ createOrder: CreateResponse; input: OrderCreateInput }>(
     CREATE_ORDER
@@ -56,6 +79,13 @@ export const useListOrder = ({
     { filter: { entity: string }; limit: number; skip: number }
   >(LIST_ORDER, {
     variables: { filter: { entity }, limit, skip },
+    fetchPolicy: "no-cache",
+  })
+}
+
+export const useFetchOrder = ({ id }: { id: string }) => {
+  return useQuery<{ order: Order }>(FETCH_ORDER, {
+    variables: { id },
     fetchPolicy: "no-cache",
   })
 }

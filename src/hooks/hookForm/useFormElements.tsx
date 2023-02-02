@@ -13,6 +13,7 @@ interface FieldInputProps<T> {
   name: Path<T>
   rules?: RegisterOptions<FieldValues, string>
   label?: false | string
+  disabled?: boolean
 }
 
 interface CheckboxInputProps<T> extends Omit<FieldInputProps<T>, "label"> {
@@ -30,13 +31,14 @@ const useFormElements = <T extends FieldValues>() => {
       register,
       formState: { errors },
     } = useFormContext<T>()
-    const { name, rules, label } = props
+    const { name, rules, label, disabled } = props
     return (
       <FormGroup name={name} label={label} rules={rules}>
         <Input
           type="text"
           {...register(name, rules)}
           hasError={fieldChecker(errors, name)}
+          disabled={disabled}
         />
       </FormGroup>
     )
@@ -47,7 +49,7 @@ const useFormElements = <T extends FieldValues>() => {
       register,
       formState: { errors },
     } = useFormContext<T>()
-    const { name, rules, label, visibleArrows } = props
+    const { name, rules, label, visibleArrows, disabled } = props
     return (
       <FormGroup name={name} label={label} rules={rules}>
         <Input
@@ -58,6 +60,7 @@ const useFormElements = <T extends FieldValues>() => {
             setValueAs: (val) => parseFloat(val),
           })}
           hasError={fieldChecker(errors, name)}
+          disabled={disabled}
         />
       </FormGroup>
     )

@@ -32,10 +32,8 @@ const Checkout = () => {
     data.customerType = CustomerType.USER
     data.customer = user?.id ?? ""
     data.entity = entity?.id ?? ""
-    console.log("data", data)
     try {
       const res = await createOrder({ variables: { input: data } })
-      console.log(res)
     } catch (e) {
       logError(e as ApolloError)
     }
